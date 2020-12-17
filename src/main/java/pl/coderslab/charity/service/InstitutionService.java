@@ -10,4 +10,8 @@ public interface InstitutionService {
 
     List<Institution> getInstitution();
 
+    List<Institution> getInstitutionEven();
+
+    List<Institution> getInstitutionOdd();
+
 }

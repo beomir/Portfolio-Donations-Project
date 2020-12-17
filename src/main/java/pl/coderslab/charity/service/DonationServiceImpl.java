@@ -19,7 +19,6 @@ public class DonationServiceImpl implements DonationService{
         this.donationRepository = donationRepository;
     }
 
-
     @Override
     public void add(Donation donation) {
         donationRepository.save(donation);
@@ -29,4 +28,15 @@ public class DonationServiceImpl implements DonationService{
     public List<Donation> getDonation() {
         return donationRepository.getDonation();
     }
+
+    @Override
+    public int SumOfDonation() {
+        return donationRepository.SumOfDonation();
+    }
+
+    @Override
+    public int QtyOfDonation() {
+        return donationRepository.QtyOfDonation();
+    }
+
 }

@@ -10,4 +10,8 @@ public interface DonationService {
 
     List<Donation> getDonation();
 
+    int SumOfDonation();
+
+    int QtyOfDonation();
+
 }

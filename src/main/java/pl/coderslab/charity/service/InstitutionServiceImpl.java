@@ -29,4 +29,14 @@ public class InstitutionServiceImpl implements InstitutionService{
     public List<Institution> getInstitution() {
         return institutionRepository.getInstitution();
     }
+
+    @Override
+    public List<Institution> getInstitutionEven() {
+        return institutionRepository.getInstitutionEven();
+    }
+
+    @Override
+    public List<Institution> getInstitutionOdd() {
+        return institutionRepository.getInstitutionOdd();
+    }
 }
