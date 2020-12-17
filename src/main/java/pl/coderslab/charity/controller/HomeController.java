@@ -28,13 +28,13 @@ public class HomeController {
 
     @RequestMapping("/")
     public String homeAction(Model model){
-        List<Institution> institutions = institutionService.getInstitution();
+//        List<Institution> institutions = institutionService.getInstitution();
         List<Institution> institutionsEven = institutionService.getInstitutionEven();
         List<Institution> institutionsOdd = institutionService.getInstitutionOdd();
 
         model.addAttribute("qtyOfDonation", donationService.QtyOfDonation());
         model.addAttribute("sumOfDonation", donationService.SumOfDonation());
-        model.addAttribute("institutions", institutions);
+//        model.addAttribute("institutions", institutions);
         model.addAttribute("institutionsEven", institutionsEven);
         model.addAttribute("institutionsOdd", institutionsOdd);
         return "index";

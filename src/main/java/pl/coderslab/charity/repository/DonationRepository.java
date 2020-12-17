@@ -12,12 +12,12 @@ import java.util.List;
 @Repository
 public interface DonationRepository extends JpaRepository<Donation, Long> {
 
-    @Query("Select d from Donation d")
+    @Query("Select d from Donation d join fetch d.categories c")
     List<Donation> getDonation();
 
-    @Query(value = "Select count(*) from donation",nativeQuery = true)
+    @Query(value = "Select count(*) from donations",nativeQuery = true)
     int QtyOfDonation();
 
-    @Query(value = "Select sum(quantity) from donation",nativeQuery = true)
+    @Query(value = "Select sum(quantity) from donations",nativeQuery = true)
     int SumOfDonation();
 }

@@ -12,8 +12,11 @@ public class CategoryFixture {
     private CategoryService categoryService;
 
             private List<Category> categoryList = Arrays.asList(
-                    new Category(null,"ubrania"),
-                    new Category(null,"zabawki")
+                    new Category(null,"ubrania, które nadają się do ponownego użycia"),
+                    new Category(null,"ubrania, do wyrzucenia"),
+                    new Category(null,"książki"),
+                    new Category(null,"zabawki"),
+                    new Category(null,"inne")
             );
 
 

@@ -32,7 +32,7 @@
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em th:text="${qtyOfDonation}" ></em>
+            <em th:text="${sumOfDonation}" ></em>
 
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
@@ -40,7 +40,7 @@
         </div>
 
         <div class="stats--item">
-            <em th:text="${sumOfDonation}"></em>
+            <em th:text="${qtyOfDonation}"></em>
             <h3>Przekazanych darów</h3>
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
                 quam.</p>
@@ -104,7 +104,7 @@
                     <div  th:text="${institutionsEven.description}" class="subtitle"></div>
                 </div>
             </li>
-            <li >
+            <li>
                 <div th:each="institutionsOdd: ${institutionsOdd}" class="col">
                     <div  th:text="${institutionsOdd.name}" class="title"></div>
                     <div  th:text="${institutionsOdd.description}" class="subtitle"></div>

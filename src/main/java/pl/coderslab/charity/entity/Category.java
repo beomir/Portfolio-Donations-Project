@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "categories")
 public class Category {
 
     @Id
@@ -23,6 +24,6 @@ public class Category {
         this.name = name;
     }
 
-    @OneToMany(mappedBy="category")
-    private List<Donation> donationList = new ArrayList<>();
+    @ManyToMany(mappedBy="categories")
+    List<Donation> donations = new ArrayList<>();
 }
