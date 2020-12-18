@@ -1459,7 +1459,7 @@ header nav ul li:last-of-type {
 
 /* line 72, scss/modules/homepage-sections/_help.scss */
 .help--slides-items .col:last-child:after {
-  float: right;
+  /*float: right;*/
 }
 
 /* line 77, scss/modules/homepage-sections/_help.scss */
@@ -1487,6 +1487,62 @@ header nav ul li:last-of-type {
   font-size: 1.2rem;
   margin-top: 20px;
 }
+
+/*//*/
+/* line 54, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1 {
+  width: 100%;
+}
+
+/* line 57, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1:last-child {
+  text-align: right;
+}
+
+/* line 61, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1:after {
+  content: "";
+  width: 70%;
+  height: 1px;
+  display: block;
+  position: relative;
+  margin-top: 25px;
+  background-color: #bcbcbc;
+}
+
+/* line 72, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1:last-child:after {
+  float: right;
+}
+
+/* line 77, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1 .title {
+  font-family: 'Merriweather', serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+/* line 83, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1 .subtitle {
+  font-family: 'Merriweather', serif;
+  font-weight: 300;
+  font-style: light;
+  font-size: 1.2rem;
+}
+
+/* line 88, scss/modules/homepage-sections/_help.scss */
+.help--slides-items .col1 .text {
+  font-family: 'Merriweather', serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/*///*/
+
 
 /* line 96, scss/modules/homepage-sections/_help.scss */
 .help--slides-pagination {

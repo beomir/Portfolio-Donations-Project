@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
       // TODO: get data from inputs and show them in summary
+
     }
 
   }
@@ -172,8 +173,149 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSteps(form);
   }
 
+  const addB = document.getElementById("addB");
+
+  addB.addEventListener("click", function () {
+
+    const bagsQty = document.getElementById("bags-qty");
+    const institutionEvent = document.getElementById("institution-event");
+    const categoriesEvent = document.getElementById("categories-event");
+    const streetEvent = document.getElementById("street-event");
+    const cityEvent = document.getElementById("city-event");
+    const zipCodeEvent = document.getElementById("zipCode-event");
+    const phoneEvent = document.getElementById("phone-event");
+    const dateEvent = document.getElementById("date-event");
+    const timeEvent = document.getElementById("time-event");
+    const commentEvent = document.getElementById("comment-event");
+
+    const quantity = document.getElementById("quantity");
+    const institution = document.querySelector(".checkboxRadio:checked");
+    var inputElements = document.getElementsByClassName('categoryCheckbox');
+    const street = document.getElementById("street");
+    const city = document.getElementById("city");
+    const zipCode = document.getElementById("zipCode");
+    const phone = document.getElementById("phone");
+    const date = document.getElementById("date");
+    const time = document.getElementById("time");
+    const comment = document.getElementById("comment");
+
+    const newRow = document.createElement("span");
+    const institutionNew = document.createElement("span");
+    const categoriesNew = document.createElement("span");
+    const streetNew = document.createElement("span");
+    const cityNew = document.createElement("span");
+    const zipCodeNew = document.createElement("span");
+    const phoneNew = document.createElement("span");
+    const dateNew = document.createElement("span");
+    const timeNew = document.createElement("span");
+    const commentNew = document.createElement("span");
+
+    institutions();
+
+    var institutionString;
+    function institutions(){
+      if(institution.value==1){
+        institutionString = " \"Bez domu\" ";
+      }
+      else if(institution.value==2){
+        institutionString = " \"Dbam o Zdrowie\" ";
+      }
+      else if(institution.value==3){
+        institutionString = " \"A kogo\" ";
+      }
+      else if(institution.value==4){
+        institutionString = " \"Dla dzieci\" ";
+      }
+      else if(institution.value==5){
+        institutionString = " \"Poszol WON!\" ";
+      }
+    }
+
+    var checkedValue = "";
+    var categories;
+    for(var i=0; inputElements[i]; ++i){
+      if(inputElements[i].checked){
+        if(inputElements[i].value == 1){
+          categories = "ubrania, które nadają się do ponownego użycia";
+        }
+        else if(inputElements[i].value== 2){
+          categories = "ubrania, do wyrzucenia";
+        }
+        else if(inputElements[i].value==3){
+          categories = "książki";
+        }
+        else if(inputElements[i].value==4){
+          categories = "zabawki";
+        }
+        else if(inputElements[i].value ==5){
+          categories = "inne";
+        }
+        checkedValue +=  categories + ", " ;
+      }
+    }
+
+    console.log(
+        checkedValue
+        ,institution.value
+        ,quantity.value
+        ,street.value
+        ,city.value
+        ,zipCode.value
+        ,phone.value
+        ,date.value
+        ,time.value
+        ,comment.value
+    )
+
+    newRow.innerHTML = `${quantity.value} `
+    institutionNew.innerHTML = institutionString;
+    categoriesNew.innerHTML = checkedValue;
+    streetNew.innerHTML = `${street.value} `
+    cityNew.innerHTML = `${city.value} `
+    zipCodeNew.innerHTML = `${zipCode.value} `
+    phoneNew.innerHTML = `${phone.value} `
+    dateNew.innerHTML = `${date.value} `
+    timeNew.innerHTML = `${time.value} `
+    commentNew.innerHTML = `${comment.value} `
 
 
 
+    bagsQty.appendChild(newRow)
+    institutionEvent.appendChild(institutionNew)
+    categoriesEvent.appendChild(categoriesNew)
+    streetEvent.appendChild(streetNew)
+    cityEvent.appendChild(cityNew)
+    zipCodeEvent.appendChild(zipCodeNew)
+    phoneEvent.appendChild(phoneNew)
+    dateEvent.appendChild(dateNew)
+    timeEvent.appendChild(timeNew)
+    commentEvent.appendChild(commentNew)
+  })
+
+  const ret = document.getElementById("ret");
+  ret.addEventListener("click", function () {
+    var bagsQty = document.getElementById("bags-qty").lastElementChild;
+    var institutionEvent = document.getElementById("institution-event").lastElementChild;
+    var categoriesEvent = document.getElementById("categories-event").lastElementChild;
+    var streetEvent = document.getElementById("street-event").lastElementChild;
+    var cityEvent = document.getElementById("city-event").lastElementChild;
+    var zipCodeEvent = document.getElementById("zipCode-event").lastElementChild;
+    var phoneEvent = document.getElementById("phone-event").lastElementChild;
+    var dateEvent = document.getElementById("date-event").lastElementChild;
+    var timeEvent = document.getElementById("time-event").lastElementChild;
+    var commentEvent = document.getElementById("comment-event").lastElementChild;
+
+    bagsQty.innerHTML = "";
+    institutionEvent.innerHTML = "";
+    categoriesEvent.innerHTML = "";
+    streetEvent.innerHTML = "";
+    cityEvent.innerHTML = "";
+    zipCodeEvent.innerHTML = "";
+    phoneEvent.innerHTML = "";
+    bagsQty.innerHTML = "";
+    dateEvent.innerHTML = "";
+    timeEvent.innerHTML = "";
+    commentEvent.innerHTML = "";
+  })
 
 });

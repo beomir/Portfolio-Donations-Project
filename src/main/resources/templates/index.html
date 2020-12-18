@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 
     <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
 </head>
@@ -97,29 +98,30 @@
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy.
             Możesz sprawdzić czym się zajmują.</p>
 
-        <ul class="help--slides-items">
-            <li>
-                <div th:each="institutionsEven: ${institutionsEven}" class="col">
+        <ul class="help--slides-items" style="float: left;text-align: left">
+            <li th:each="institutionsOdd: ${institutionsOdd}">
+                <div style="float: left;text-align: left" class="col">
+                    <div  th:text="${institutionsOdd.name}" class="title"></div>
+                    <div  th:text="${institutionsOdd.description}" class="subtitle"></div>
+                </div>
+            </li>
+        </ul>
+        <ul class="help--slides-items" style="float: right;text-align: right;">
+            <li  th:each="institutionsEven: ${institutionsEven}">
+                <div  style="float: right;text-align: right" class="col1">
                     <div  th:text="${institutionsEven.name}" class="title"></div>
                     <div  th:text="${institutionsEven.description}" class="subtitle"></div>
                 </div>
             </li>
-            <li>
-                <div th:each="institutionsOdd: ${institutionsOdd}" class="col">
-                    <div  th:text="${institutionsOdd.name}" class="title"></div>
-                    <div  th:text="${institutionsOdd.description}" class="subtitle"></div>
-                </div>
-
-            </li>
-
         </ul>
+
     </div>
 
 </section>
 
-<footer>
-    <span th:include="fragments/footer :: footer"></span>
-</footer>
+
+    <footer th:include="fragments/footer :: footer"></footer>
+
 <!--<script type="text/javascript" th:src= "@{/js/app.js}"></script>-->
 </body>
 </html>
