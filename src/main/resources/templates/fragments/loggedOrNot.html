@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="loggedOrNot">
+    <ul th:if="${#request.remoteUser} == null" class="nav--actions">
+        <li><a th:href="@{/login}" class="btn btn--small btn--without-border">Zaloguj</a></li>
+        <li><a th:href="@{/register}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+    </ul>
+    <ul th:if="${#request.remoteUser} != null" class="nav--actions">
+        <li class="logged-user">
+            <div th:text="'Witaj: ' +${#request.remoteUser}"></div>
+            <ul class="dropdown">
+                <li><a th:href="@{/myProfile}">Profil</a></li>
+                <li><a th:href="@{/myFundraising}">Moje zbiórki</a></li>
+                <li><a th:href="@{/logout}">Wyloguj</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

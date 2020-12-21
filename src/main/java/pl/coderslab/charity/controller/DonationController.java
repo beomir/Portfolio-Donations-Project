@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
@@ -15,6 +16,7 @@ import pl.coderslab.charity.service.InstitutionService;
 import java.util.List;
 
 @Controller
+@RequestMapping("/logged")
 public class DonationController {
 
     private final DonationService donationService;
@@ -43,7 +45,7 @@ public class DonationController {
     @PostMapping("form")
     public String donationAdd(Donation donation) {
         donationService.add(donation);
-        return "redirect:/form-confirmation";
+        return "redirect:/logged/form-confirmation";
     }
 
     @GetMapping("form-confirmation")

@@ -9,12 +9,16 @@ public class LoadFixtures {
     private CategoryFixture categoryFixture;
     private InstitutionFixture institutionFixture;
     private DonationFixture donationFixture;
+    private UsersFixture usersFixture;
+    private UsersRolesFixture usersRolesFixture;
 
 
-    public LoadFixtures(CategoryFixture categoryFixture, InstitutionFixture institutionFixture, DonationFixture donationFixture) {
+    public LoadFixtures(CategoryFixture categoryFixture, InstitutionFixture institutionFixture, DonationFixture donationFixture, UsersFixture usersFixture, UsersRolesFixture usersRolesFixture) {
         this.categoryFixture = categoryFixture;
         this.institutionFixture = institutionFixture;
         this.donationFixture = donationFixture;
+        this.usersFixture = usersFixture;
+        this.usersRolesFixture = usersRolesFixture;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -22,5 +26,7 @@ public class LoadFixtures {
         categoryFixture.loadIntoDB();
         institutionFixture.loadIntoDB();
         donationFixture.loadIntoDB();
+        usersRolesFixture.loadIntoDB();
+        usersFixture.loadIntoDB();
     }
 }

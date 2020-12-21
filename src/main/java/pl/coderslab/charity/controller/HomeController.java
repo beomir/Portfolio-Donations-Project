@@ -26,7 +26,7 @@ public class HomeController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String homeAction(Model model){
 //        List<Institution> institutions = institutionService.getInstitution();
         List<Institution> institutionsEven = institutionService.getInstitutionEven();

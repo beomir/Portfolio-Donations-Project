@@ -318,4 +318,5 @@ document.addEventListener("DOMContentLoaded", function() {
     commentEvent.innerHTML = "";
   })
 
+
 });

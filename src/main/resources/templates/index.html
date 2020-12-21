@@ -12,10 +12,7 @@
 <body>
 <header class="header--main-page">
     <nav class="container container--70">
-        <ul class="nav--actions">
-            <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
-            <li><a href="#" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-        </ul>
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
 
         <span th:include="fragments/header :: header"></span>
     </nav>
@@ -76,7 +73,7 @@
         </div>
     </div>
 
-    <a href="#" class="btn btn--large">Załóż konto</a>
+    <a th:href="@{/login}" class="btn btn--large">Załóż konto</a>
 </section>
 
 <section class="about-us">
