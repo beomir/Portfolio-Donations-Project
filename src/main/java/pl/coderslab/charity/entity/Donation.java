@@ -41,4 +41,50 @@ public class Donation {
     private String pickUpComment;
     private String phone;
 
+    @NotNull
+    @ManyToOne
+    private Users users;
+
+    private String created;
+    private String last_update;
+    private String changeBy;
+    private boolean active;
+
+    public Donation(Long id, int quantity, Institution institution, String street, String city, String zipCode, LocalDate pickUpDate, LocalTime pickUpTime, String pickUpComment, String phone, Users users, String created, String last_update, String changeBy, boolean active) {
+        this.id = id;
+        this.quantity = quantity;
+        this.institution = institution;
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.pickUpDate = pickUpDate;
+        this.pickUpTime = pickUpTime;
+        this.pickUpComment = pickUpComment;
+        this.phone = phone;
+        this.users = users;
+        this.created = created;
+        this.last_update = last_update;
+        this.changeBy = changeBy;
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Donation{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", pickUpDate=" + pickUpDate +
+                ", pickUpTime=" + pickUpTime +
+                ", pickUpComment='" + pickUpComment + '\'' +
+                ", phone='" + phone + '\'' +
+                ", users=" + users +
+                ", created='" + created + '\'' +
+                ", last_update='" + last_update + '\'' +
+                ", changeBy='" + changeBy + '\'' +
+                ", active=" + active +
+                '}';
+    }
 }

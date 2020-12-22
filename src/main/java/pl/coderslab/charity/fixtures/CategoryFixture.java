@@ -1,6 +1,7 @@
 package pl.coderslab.charity.fixtures;
 
 import org.springframework.stereotype.Component;
+import pl.coderslab.charity.app.TimeUtils;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.service.CategoryService;
 
@@ -12,11 +13,11 @@ public class CategoryFixture {
     private CategoryService categoryService;
 
             private List<Category> categoryList = Arrays.asList(
-                    new Category(null,"ubrania, które nadają się do ponownego użycia"),
-                    new Category(null,"ubrania, do wyrzucenia"),
-                    new Category(null,"książki"),
-                    new Category(null,"zabawki"),
-                    new Category(null,"inne")
+                    new Category(null,"ubrania, które nadają się do ponownego użycia", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
+                    new Category(null,"ubrania, do wyrzucenia",TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
+                    new Category(null,"książki",TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
+                    new Category(null,"zabawki",TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
+                    new Category(null,"inne",TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true)
             );
 
 

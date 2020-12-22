@@ -19,11 +19,28 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public Category(Long id, String name) {
+    private String created;
+    private String last_update;
+    private String changeBy;
+    private boolean active;
+
+    public Category(Long id, String name,String created,String last_update,String changeBy,boolean active) {
         this.id = id;
         this.name = name;
+        this.created = created;
+        this.last_update = last_update;
+        this.changeBy = changeBy;
+        this.active = active;
     }
 
     @ManyToMany(mappedBy="categories")
     List<Donation> donations = new ArrayList<>();
+
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

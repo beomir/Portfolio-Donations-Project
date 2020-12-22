@@ -10,6 +10,10 @@ public interface DonationService {
 
     List<Donation> getDonation();
 
+    List<Donation> getDonationByUserEmail(String email);
+
+    Donation getDonationById(Long id);
+
     int SumOfDonation();
 
     int QtyOfDonation();

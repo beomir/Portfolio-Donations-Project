@@ -16,9 +16,6 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query("Select u from Users u where u.active = false")
     List<Users> getDeactivatedUsers();
 
-//    @Modifying
-//    @Query("update Users u set u.email = :email where u.id = :id")
-//    void edit(@Param(value = "id") long id, @Param(value = "email") String email);
 
     boolean existsByUsername(String username);
     Users getByUsername(String username);
@@ -31,11 +28,10 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query("Select distinct u from Users u where u.id =?1")
     List<Users> getUser(Long id);
 
+    @Query(value="Select username from users where email = ?1",nativeQuery = true)
+    String FindUsernameByEmail(String email);
 
-    //To think about solution for this
-//    @Modifying
-//    @Transactional
-//    @Query("update Users u set u.usersRoles = ?1")
-//    List<Users> updateRole(Users users);
+    @Query(value="Select id from users where email = ?1",nativeQuery = true)
+    Long FindUserIdByEmail(String email);
 
 }

@@ -35,6 +35,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
                 users.getEmail()
                 , users.getPassword()
                 , getAuthoritites(users));
+
 //                ,Collections.singletonList(new SimpleGrantedAuthority("USER")));
 
 

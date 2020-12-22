@@ -26,6 +26,10 @@ public interface UsersService {
 
     void activate(Long id);
 
+    String FindUsernameByEmail(String email);
+
+    Long FindUserIdByEmail(String email);
+
     //To think about solution for this
 //    void updateRole(Users users);
 

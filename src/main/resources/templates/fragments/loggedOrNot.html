@@ -8,14 +8,16 @@
     </ul>
     <ul th:if="${#request.remoteUser} != null" class="nav--actions">
         <li class="logged-user">
-            <div th:text="'Witaj: ' +${#request.remoteUser}"></div>
+            <div th:text="'Witaj: ' +${username}"></div>
             <ul class="dropdown">
-                <li><a th:href="@{/myProfile}">Profil</a></li>
-                <li><a th:href="@{/myFundraising}">Moje zbiórki</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin}">Panel admina</a></li>
+                <li><a th:href="@{/myProfile/{id}(id=${id})}">Zarzadzaj kontem</a></li>
+                <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:href="@{/donationList}">Moje zbiórki</a></li>
                 <li><a th:href="@{/logout}">Wyloguj</a></li>
             </ul>
         </li>
     </ul>
+
 </div>
 </body>
 </html>

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -35,6 +37,9 @@ public class Users {
     @ManyToOne
     private UsersRoles usersRoles;
 
+    @OneToMany(mappedBy="users")
+    private List<Donation> donationList = new ArrayList<>();
+
     private String changeBy;
 
     public Users(Long id, String username, String password, String created, String last_update, UsersRoles usersRoles, String email, boolean active, String changeBy,String lastName) {
@@ -50,5 +55,18 @@ public class Users {
         this.lastName = lastName;
     }
 
-
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", created='" + created + '\'' +
+                ", last_update='" + last_update + '\'' +
+                ", active=" + active +
+                ", changeBy='" + changeBy + '\'' +
+                '}';
+    }
 }

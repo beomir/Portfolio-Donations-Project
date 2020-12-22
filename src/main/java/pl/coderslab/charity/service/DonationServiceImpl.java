@@ -30,6 +30,16 @@ public class DonationServiceImpl implements DonationService{
     }
 
     @Override
+    public List<Donation> getDonationByUserEmail(String email) {
+        return donationRepository.getDonationByUserEmail(email);
+    }
+
+    @Override
+    public Donation getDonationById(Long id) {
+        return donationRepository.getDonationById(id);
+    }
+
+    @Override
     public int SumOfDonation() {
         return donationRepository.SumOfDonation();
     }

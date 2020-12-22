@@ -83,6 +83,16 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
         usersRepository.save(users);
     }
 
+    @Override
+    public String FindUsernameByEmail(String email) {
+        return usersRepository.FindUsernameByEmail(email);
+    }
+
+    @Override
+    public Long FindUserIdByEmail(String email) {
+        return usersRepository.FindUserIdByEmail(email);
+    }
+
     //To think about solution for this
 //    @Override
 //    public void updateRole(Users users) {

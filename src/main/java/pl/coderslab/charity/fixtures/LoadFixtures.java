@@ -25,8 +25,8 @@ public class LoadFixtures {
     public void runAfterStartup() {
         categoryFixture.loadIntoDB();
         institutionFixture.loadIntoDB();
-        donationFixture.loadIntoDB();
         usersRolesFixture.loadIntoDB();
         usersFixture.loadIntoDB();
+        donationFixture.loadIntoDB();
     }
 }

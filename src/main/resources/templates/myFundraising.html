@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+
+  </head>
+  <body>
+    <header>
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+      </nav>
+    </header>
+
+    <section class="login-page">
+      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz szczegóły dotyczące zbiórki numer: ' + ${id}"> </h2>
+    </section>
+    <form style="text-align: center" th:object="${donations}" method="post" th:action="@{/myFundraising}">
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Ilość</label><br/>
+        <input type="number" th:field="*{quantity}"  />
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Fundacja</label><br/>
+        <select class="select-css" th:field="*{institution}">
+          <option th:each="i : ${institutions}" th:value="${i.id}" th:text="${i.name}">
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Utworzona</label><br/>
+        <span th:text="*{#strings.replace(#strings.substring(created,0,19),'T',' ')}"></span>
+        <input type="hidden" th:field="*{created}"/>
+        <input type="hidden" th:value="1" id="usersRoles" name="usersRoles"/>
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Ostatnia aktualizacja</label><br/>
+        <span th:text="*{#strings.replace(#strings.substring(last_update,0,19),'T',' ')}"></span>
+        <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Przez kogo</label><br/>
+        <span th:text="*{changeBy}"></span>
+        <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Odebrana?</label><br/>
+        <select class="select-css" th:field="*{active}">
+          <option th:value="true">Nie</option>
+          <option th:value="false">Tak</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Miasto</label><br/>
+        <input type="text" th:field="*{city}"  />
+      </div>
+
+      <div style="text-align: center" class="form-group">
+        <label style="color: black;font-weight: bold">Kategorie</label><br/>
+          <label>Wybrane:</label>
+          <div th:each="i : *{categories}"  th:text="${i.name}"></div><br/>
+          <div>Zmień:</div>
+        <label>ubrania, które nadają się do ponownego użycia</label>
+        <input class="categoryCheckbox" type="checkbox" th:value="1" id="categories" name="categories"/><br/>
+        <label>ubrania, do wyrzucenia</label>
+        <input class="categoryCheckbox" type="checkbox" th:value="2" id="categories" name="categories"/><br/>
+        <label>książki</label>
+        <input class="categoryCheckbox" type="checkbox" th:value="3" id="categories" name="categories"/><br/>
+        <label>zabawki</label>
+        <input class="categoryCheckbox" type="checkbox" th:value="4" id="categories" name="categories"/><br/>
+        <label>inne</label>
+        <input class="categoryCheckbox" type="checkbox" th:value="5" id="categories" name="categories"/><br/>
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Ulica</label><br/>
+        <input type="text" th:field="*{street}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Kod pocztowy</label><br/>
+        <input type="text" th:field="*{zipCode}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Numer Telefonu</label><br/>
+        <input type="text" th:field="*{phone}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Godzina odbioru</label><br/>
+        <input type="text" th:field="*{pickUpTime}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Data odbioru</label><br/>
+        <input type="date" th:field="*{pickUpDate}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Komentarz Odbioru</label><br/>
+        <input type="text" th:field="*{pickUpComment}"  />
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{users}"/>
+      </div>
+
+
+
+      <div style="margin-left: auto;margin-right: auto" class="form-group form-group--buttons">
+        <button style="margin-left: auto;margin-right: auto;min-width: 23%;" type="submit" onclick="return checkPasswordAndName()" class="btn">Zmień szczegóły zbiórki</button>
+      </div>
+    </form>
+
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+      </footer>
+  </body>
+</html>
