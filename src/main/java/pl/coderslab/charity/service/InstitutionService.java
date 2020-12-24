@@ -14,4 +14,12 @@ public interface InstitutionService {
 
     List<Institution> getInstitutionOdd();
 
+    Institution getInstitutionById(Long id);
+
+    void deactivateInstitution(Long id);
+
+    void activateInstitution(Long id);
+
+    void deleteInstitution(Long id);
+
 }

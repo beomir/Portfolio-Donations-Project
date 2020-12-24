@@ -2,11 +2,14 @@ package pl.coderslab.charity.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.coderslab.charity.app.SecurityUtils;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.repository.CategoryRepository;
 import pl.coderslab.charity.repository.DonationRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -47,6 +50,24 @@ public class DonationServiceImpl implements DonationService{
     @Override
     public int QtyOfDonation() {
         return donationRepository.QtyOfDonation();
+    }
+
+    @Override
+    public void deactivate(Long id) {
+        Donation donation = donationRepository.getOne(id);
+        donation.setActive(true);
+        donation.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        donation.setChangeBy(SecurityUtils.usernameForActivations());
+        donationRepository.save(donation);
+    }
+
+    @Override
+    public void activate(Long id) {
+        Donation donation = donationRepository.getOne(id);
+        donation.setActive(false);
+        donation.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        donation.setChangeBy(SecurityUtils.usernameForActivations());
+        donationRepository.save(donation);
     }
 
 }

@@ -10,27 +10,24 @@ public interface UsersService {
 
     void addWithoutCodePass(Users users);
 
-//    void edit(Users users);
 
     List<Users> getUsers();
 
-    List<Users> getDeactivatedUsers();
 
     Users findById(Long id);
 
     List<Users> getUser(Long id);
 
-    void delete(Long id);
+    void deactivateUsers(Long id);
 
-    void remove(Long id);
+    void activateUsers(Long id);
 
-    void activate(Long id);
+    void deleteUsers(Long id);
 
     String FindUsernameByEmail(String email);
 
     Long FindUserIdByEmail(String email);
 
-    //To think about solution for this
-//    void updateRole(Users users);
+    Users getUsersById(Long id);
 
 }

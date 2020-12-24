@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.app.SecurityUtils;
+import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.Users;
 import pl.coderslab.charity.repository.UsersRepository;
 
@@ -16,7 +17,6 @@ import java.util.List;
 public class UsersServiceImpl implements pl.coderslab.charity.service.UsersService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
-
 
 
     @Autowired
@@ -49,10 +49,6 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
         return usersRepository.getUsers();
     }
 
-    @Override
-    public List<Users> getDeactivatedUsers() {
-        return usersRepository.getDeactivatedUsers();
-    }
 
     @Override
     public Users findById(Long id) {
@@ -60,28 +56,6 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     }
 
 
-    @Override
-    public void delete(Long id) {
-        Users users = usersRepository.getOne(id);
-        users.setActive(false);
-        users.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
-        users.setChangeBy(SecurityUtils.usernameForActivations());
-        usersRepository.save(users);
-        }
-
-    @Override
-    public void remove(Long id) {
-            usersRepository.deleteById(id);
-        }
-
-    @Override
-    public void activate(Long id) {
-        Users users = usersRepository.getOne(id);
-        users.setActive(true);
-        users.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
-        users.setChangeBy(SecurityUtils.usernameForActivations());
-        usersRepository.save(users);
-    }
 
     @Override
     public String FindUsernameByEmail(String email) {
@@ -93,11 +67,34 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
         return usersRepository.FindUserIdByEmail(email);
     }
 
-    //To think about solution for this
-//    @Override
-//    public void updateRole(Users users) {
-//        usersRepository.updateRole(users);
-//    }
+    @Override
+    public Users getUsersById(Long id) {
+        return usersRepository.getUsersById(id);
+    }
 
+    @Override
+    public void deactivateUsers(Long id) {
+        Users users = usersRepository.getOne(id);
+        users.setActive(false);
+        users.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        users.setChangeBy(SecurityUtils.usernameForActivations());
+        usersRepository.save(users);
+    }
 
+    @Override
+    public void activateUsers(Long id) {
+        Users users = usersRepository.getOne(id);
+        users.setActive(true);
+        users.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        users.setChangeBy(SecurityUtils.usernameForActivations());
+        usersRepository.save(users);
+    }
+
+    @Override
+    public void deleteUsers(Long id) {
+        if (!usersRepository.readyToDelete(id)) {
+            usersRepository.deleteById(id);
+        }
+
+    }
 }

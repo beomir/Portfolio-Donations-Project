@@ -3,6 +3,7 @@ package pl.coderslab.charity.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.Users;
 
 import java.util.List;
@@ -33,5 +34,11 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     @Query(value="Select id from users where email = ?1",nativeQuery = true)
     Long FindUserIdByEmail(String email);
+
+    @Query("Select u from Users u where u.id = ?1")
+    Users getUsersById(Long id);
+
+    @Query(value="Select active from users where id = ?1")
+    boolean readyToDelete(Long id);
 
 }

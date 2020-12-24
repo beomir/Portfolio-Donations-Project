@@ -19,23 +19,25 @@
     </header>
 
     <section class="login-page">
-      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz informację dotyczące swoich donacji'"> </h2>
+      <h2 th:text="'Hej '+ ${username} + ' ,poniżej lista użytkowników'"> </h2>
     </section>
 
     <div style="text-align: center;background-color: #00BCD4;border-radius: 3px">
       <div style="color: black;text-align: center;font-size: 20px;font-weight: bold;" th:text="'Twoje Zbiórki'"></div><br/><br/>
       <table  style="color: black;text-align: left;width:100%;border: solid 1px;">
         <tr style="border: solid 1px">
-          <th class="tables">Numer Zbiórki</th>
-          <th class="tables">Ile worków</th>
-          <th class="tables">Kategorie</th>
-          <th class="tables">Dla jakiej fundacji</th>
-          <th class="tables">Daty utworzenia wpisu</th>
-          <th class="tables">Data Odbioru</th>
-          <th class="tables">Statusu odebrane/nieodebrane</th>
+          <th class="tables">Imię</th>
+          <th class="tables">Nazwisko</th>
+          <th class="tables">E-mail</th>
+          <th class="tables">Stworzony</th>
+          <th class="tables">Ostatnia aktualizacja</th>
+          <th class="tables">Ostatnia zmiana przez</th>
+          <th class="tables">Status</th>
+          <th class="tables">Uprawnienia</th>
           <th class="tables"><span id="changeStatus">Zmień status</span></th>
+          <th class="tables"><span id="delete">Usuń</span></th>
         </tr>
-        <tr style="border: solid 1px" th:each="donationList: ${donationList}">
+        <tr style="border: solid 1px" th:each="userList: ${userList}">
           <td style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły i móc edytować" class="tables" >
             <a th:href="@{/logged/myFundraising/{id}(id=${donationList.id})}"><div th:text="${donationList.id}"></div></a>
           </td>

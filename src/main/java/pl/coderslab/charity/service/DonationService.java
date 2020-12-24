@@ -18,4 +18,8 @@ public interface DonationService {
 
     int QtyOfDonation();
 
+    void deactivate(Long id);
+
+    void activate(Long id);
+
 }

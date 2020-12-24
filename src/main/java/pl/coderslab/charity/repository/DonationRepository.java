@@ -21,7 +21,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     @Query(value = "Select sum(quantity) from donations",nativeQuery = true)
     int SumOfDonation();
 
-    @Query("Select distinct d from Donation d join fetch d.users u join fetch d.categories c where u.email = ?1")
+    @Query("Select distinct d from Donation d join fetch d.users u join fetch d.categories c where u.email = ?1 order by d.active,d.pickUpDate,d.pickUpTime,d.created")
     List<Donation> getDonationByUserEmail(String email);
 
     @Query("Select d from Donation d where d.id = ?1")

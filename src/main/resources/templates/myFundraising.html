@@ -21,7 +21,7 @@
     <section class="login-page">
       <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz szczegóły dotyczące zbiórki numer: ' + ${id}"> </h2>
     </section>
-    <form style="text-align: center" th:object="${donations}" method="post" th:action="@{/myFundraising}">
+    <form style="text-align: center" th:object="${donations}" method="post" th:action="@{/logged/myFundraising}">
 
       <div class="form-group">
         <label style="color: black;font-weight: bold">Ilość</label><br/>
@@ -68,7 +68,7 @@
         <label style="color: black;font-weight: bold">Kategorie</label><br/>
           <label>Wybrane:</label>
           <div th:each="i : *{categories}"  th:text="${i.name}"></div><br/>
-          <div>Zmień:</div>
+          <div style="font-size: 16px;font-width: bold;">Zmień:</div>
         <label>ubrania, które nadają się do ponownego użycia</label>
         <input class="categoryCheckbox" type="checkbox" th:value="1" id="categories" name="categories"/><br/>
         <label>ubrania, do wyrzucenia</label>
@@ -116,12 +116,35 @@
 
 
       <div style="margin-left: auto;margin-right: auto" class="form-group form-group--buttons">
-        <button style="margin-left: auto;margin-right: auto;min-width: 23%;" type="submit" onclick="return checkPasswordAndName()" class="btn">Zmień szczegóły zbiórki</button>
+        <button style="margin-left: auto;margin-right: auto;min-width: 23%;" type="submit" onclick="return checkbox()" class="btn">Zmień szczegóły zbiórki</button>
       </div>
     </form>
 
     <footer>
       <span th:include="fragments/footer :: footer"></span>
       </footer>
+    <script type="text/javascript">
+
+
+    function checkbox() {
+      var inputElements = document.getElementsByClassName('categoryCheckbox');
+      checkedValue = null;
+      for (var i = 0; inputElements[i]; ++i) {
+        if (inputElements[i].checked) {
+          checkedValue += inputElements[i];
+        }
+      }
+      if(checkedValue == null){
+        alert("Nie została wybrana wartość dla pól Kategoria")
+        returnToPreviousPage();
+        return false;
+      }
+      function returnToPreviousPage() {
+        window.history.forward(-1);
+      }
+    }
+
+
+  </script>
   </body>
 </html>

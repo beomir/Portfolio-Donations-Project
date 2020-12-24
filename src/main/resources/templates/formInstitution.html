@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <header>
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+      </nav>
+    </header>
+
+    <section class="login-page">
+      <h2>Dodaj Fundacje</h2>
+      <form th:object="${institution}" method="post" th:action="@{/admin/formInstitution}">
+        <div class="form-group">
+          <input type="text" th:field="*{name}" placeholder="Nazwa Fundacji" id="fundationName"/>
+          <span id="nameError"></span>
+        </div>
+        <div class="form-group">
+          <input type="text" th:field="*{description}" placeholder="Cel i Opis Fundacji" />
+        </div>
+        <div class="form-group">
+          <input type="hidden" th:value="${localDateTime}" id="created" name="created"/>
+          <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+          <input type="hidden" th:value="true" id="active" name="active"/>
+          <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+        </div>
+
+        <div style="min-width: 31%;" class="form-group form-group--buttons">
+          <button style="min-width: 31%;" type="submit" onclick="return checkIfInstitutionExistSecond()" class="btn">Dodaj Fundacje</button>
+        </div>
+      </form>
+
+
+    </section>
+    <div style="visibility:hidden;">Fundacje:</div>
+    <div th:each="i : ${institutions}" th:text="${i.name}" class="allInst" style="visibility: hidden"></div><br/><br/>
+    <button style="margin-left: auto;margin-right: auto;font-size: 25px" onclick="checkIfInstitutionExist()">Check by JS if Institution exist</button>
+    <span id="allinstDiv"></span>
+    <span id="fundationNameDiv"></span>
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+    </footer>
+    <script type="text/javascript">
+
+      function checkIfInstitutionExist() {
+        var fundationName = document.getElementById("fundationName").value;
+        var instittionFromDB = document.getElementsByClassName('allInst');
+        // document.getElementById("allinstDiv").innerHTML = inputElements;
+        var checkedValue = ""
+        for(var i=0; i < instittionFromDB.length; i++){
+          checkedValue +=  instittionFromDB[i].value + ", "
+          // if(inputElements[i].value == fundationName){
+          //   alert("Taka nazwa fundacji już istnieje w bazie danych")
+          //   returnToPreviousPage();
+          //   return false;
+          // }
+        }
+        document.getElementById("allinstDiv").innerHTML = "Try to catch value from th:each on institution by JS: " + checkedValue;
+        document.getElementById("fundationNameDiv").innerHTML = "Added by form: " + fundationName;
+      }
+
+      function checkIfInstitutionExistSecond() {
+        var fundationName = document.getElementById("fundationName").value;
+        if(fundationName==null || fundationName == ""){
+          alert("Nazwa fundacji nie moze być pusta")
+          returnToPreviousPage();
+          return false;
+        }
+      }
+
+
+      function returnToPreviousPage() {
+        window.history.forward(-1)
+      }
+    </script>
+  </body>
+</html>

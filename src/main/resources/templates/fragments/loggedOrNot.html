@@ -11,8 +11,8 @@
             <div th:text="'Witaj: ' +${username}"></div>
             <ul class="dropdown">
                 <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin}">Panel admina</a></li>
-                <li><a th:href="@{/myProfile/{id}(id=${id})}">Zarzadzaj kontem</a></li>
-                <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:href="@{/donationList}">Moje zbiórki</a></li>
+                <li><a th:href="@{/myProfile/{id}(id=${userId})}">Zarzadzaj kontem</a></li>
+                <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:href="@{/logged/donationList}">Moje zbiórki</a></li>
                 <li><a th:href="@{/logout}">Wyloguj</a></li>
             </ul>
         </li>

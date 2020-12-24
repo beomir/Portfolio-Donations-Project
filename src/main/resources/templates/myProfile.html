@@ -70,7 +70,7 @@
           </tr>
           <tr style="border: solid 1px" th:each="donationList: ${donationList}">
             <td style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły" class="tables" >
-              <a th:href="@{/myFundraising/{id}(id=${id})}"><div th:text="${donationList.id}"></div></a>
+              <a th:href="@{/logged/myFundraising/{id}(id=${donationList.id})}"><div th:text="${donationList.id}"></div></a>
             </td>
             <td class="tables" th:text="${donationList.quantity}"></td>
 
@@ -120,6 +120,7 @@
           return false;
         }
       }
+
 
       function returnToPreviousPage() {
         window.history.forward(-1)

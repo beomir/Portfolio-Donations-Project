@@ -46,7 +46,7 @@ public class HomeController {
         model.addAttribute("username", username);
 
         Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("id", userId);
+        model.addAttribute("userId", userId);
         return "index";
     }
 }
