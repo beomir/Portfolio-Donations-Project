@@ -71,4 +71,10 @@ public class InstitutionServiceImpl implements InstitutionService{
     public void deleteInstitution(Long id) {
         institutionRepository.deleteById(id);
     }
+
+    @Override
+    public List<Institution> getActiveInstitution() {
+        return institutionRepository.getActiveInstitution();
+    }
+
 }

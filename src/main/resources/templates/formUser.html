@@ -23,77 +23,45 @@
     </header>
 
     <section class="login-page">
-      <h2>Załóż konto</h2>
-      <form th:object="${users}" method="post" th:action="@{/register}">
+      <h2>Stwórz użytkownika</h2>
+      <form th:object="${user}" method="post" th:action="@{/admin/formUser}">
         <div class="form-group">
           <input type="text" th:field="*{username}" placeholder="Imię" id="username"/>
-          <span id='adminError'></span>
+          <span id="nameError"></span>
         </div>
         <div class="form-group">
           <input type="text" th:field="*{lastName}" placeholder="Nazwisko" />
         </div>
         <div class="form-group">
-          <input type="email" th:field="*{email}" placeholder="Email" />
-        </div>
-        <div class="form-group">
           <input type="password" th:field="*{password}" id="password" name="password" placeholder="Hasło" />
         </div>
+
         <div class="form-group">
-          <input type="password" name="password2" id="password2" placeholder="Powtórz hasło" />
-          <span id='message'></span>
+          <input type="email" th:field="*{email}" placeholder="E-mail"/>
           <input type="hidden" th:value="${localDateTime}" id="created" name="created"/>
           <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
           <input type="hidden" th:value="true" id="active" name="active"/>
-          <input type="hidden" th:value="Registry" id="changeBy" name="changeBy"/>
-          <input type="hidden" th:value="1" id="usersRoles" name="usersRoles"/>
+          <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
         </div>
-
+        <div class="form-group">
+        <select class="select-css" th:field="*{usersRoles}">
+          <option th:each="i : ${usersRoles}" th:value="${i.id}" th:text="${#strings.substring(i.role,5)}">
+        </select>
+        </div>
         <div style="min-width: 31%;" class="form-group form-group--buttons">
-          <button style="min-width: 31%;" type="submit" onclick="return checkPasswordAndName()" class="btn">Załóż konto</button>
+          <button style="min-width: 31%;" type="submit" onclick="return infoForAdmin()" class="btn">Stwórz Użytkownika</button>
         </div>
       </form>
-    </section>
 
+    </section>
     <footer>
       <span th:include="fragments/footer :: footer"></span>
     </footer>
     <script type="text/javascript">
-    $('#username').on('keyup', function() {
-      if($('#username').val().includes('admin')) {
-        $('#adminError').html('Konto ze słowem admin jest zarezerwowane').css('color', 'red');
-      } else
-        $('#adminError').html('Imie dozwolone').css('color', 'green');
-    })
-
-    $('#password, #password2').on('keyup', function () {
-      if ($('#password').val() == $('#password2').val()) {
-        $('#message').html('Jest OK').css('color', 'green');
-      } else
-        $('#message').html('Jest różnica względem pierwszego hasła, popraw').css('color', 'red');
-    });
-
-
-    function checkPasswordAndName() {
-      var pass1 = document.getElementById("password").value;
-      var pass2 = document.getElementById("password2").value;
-      var admin = document.getElementById("username").value;
-
-      if(pass1 != pass2 )
-      {
-        alert("Hasła różnią się od siebie")
-        returnToPreviousPage();
-        return false;
+      function infoForAdmin() {
+          alert("Hasło nowego użytkownika to: First123")
       }
-      if(admin.includes('admin')){
-        alert("Konto ze słowem admin jest zarezerwowane")
-        returnToPreviousPage();
-        return false;
-      }
-    }
 
-    function returnToPreviousPage() {
-      window.history.forward(-1)
-    }
-  </script>
+    </script>
   </body>
 </html>

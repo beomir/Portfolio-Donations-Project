@@ -22,4 +22,6 @@ public interface InstitutionService {
 
     void deleteInstitution(Long id);
 
+    List<Institution> getActiveInstitution();
+
 }

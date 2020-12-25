@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <header>
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+        <span sec:authorize="hasRole('ROLE_ADMIN')">
+        <br/><br/><br/><br/>
+        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <span th:include="fragments/adminNavigation :: adminNavigation"></span>
+        </span>
+      </nav>
+    </header>
+
+    <section class="login-page">
+      <h2>Stwórz Donacje</h2>
+      <form th:object="${donation}" method="post" th:action="@{/admin/donationsCreation}">
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Kategorie:</label><br/><br/>
+          <label th:each="i : ${categories}">
+          <input class="checkboxRadio" type="checkbox" th:field="*{categories}"  th:value="${i.id}" id="categories"/>
+            <span style="font-weight: bold" th:text="${i.name}" th:value="${i.id}" class="title"></span><br/>
+          </label>
+        </div>
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Ilość worków:</label><br/>
+          <input type="number" th:field="*{quantity}" placeholder="Ilość worków" />
+        </div>
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Fundacja:</label><br/><br/>
+          <label th:each="i : ${institutions}">
+            <input class="checkboxRadio" type="radio" th:field="*{institution.id}" th:value="${i.id}" id="institution"/>
+            <span style="font-weight: bold" th:value="${i.id}" th:text="${i.name}" class="title" ></span>
+            <div style="font-style: italic" th:text="${i.description}" class="subtitle"></div>
+          </label>
+        </div>
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Ulica</label><br/>
+          <input type="text" th:field="*{street}"  />
+        </div>
+
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Miasto</label><br/>
+          <input type="text" th:field="*{city}"  />
+        </div>
+
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Kod pocztowy</label><br/>
+          <input type="text" th:field="*{zipCode}"  />
+        </div>
+
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Numer Telefonu</label><br/>
+          <input type="text" th:field="*{phone}"  />
+        </div>
+
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Godzina odbioru</label><br/>
+          <input type="time" th:field="*{pickUpTime}"  />
+        </div>
+
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Data odbioru</label><br/>
+          <input type="date" th:field="*{pickUpDate}"  />
+        </div>
+
+        <div class="form-group">
+          <label style="color: black;font-weight: bold">Komentarz Odbioru</label><br/>
+          <input type="text" th:field="*{pickUpComment}"  />
+          <input type="hidden" th:value="${localDateTime}" id="created" name="created"/>
+          <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+          <input type="hidden" th:value="true" id="active" name="active"/>
+          <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+        </div>
+        <div class="form-group">
+          <select class="select-css" th:field="*{users}">
+            <option th:each="i : ${usersList}" th:value="${i.id}" th:text="${i.email}">
+          </select>
+        </div>
+
+        <div style="min-width: 31%;" class="form-group form-group--buttons">
+          <button style="min-width: 31%;" type="submit"  class="btn">Stwórz Donacje</button>
+        </div>
+      </form>
+
+    </section>
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+    </footer>
+  </body>
+</html>

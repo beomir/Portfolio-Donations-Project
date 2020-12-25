@@ -14,6 +14,11 @@
         <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
 
         <span th:include="fragments/header :: header"></span>
+          <span sec:authorize="hasRole('ROLE_ADMIN')">
+        <br/><br/><br/><br/>
+        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <span th:include="fragments/adminNavigation :: adminNavigation"></span>
+        </span>
       </nav>
     </header>
 
@@ -27,25 +32,23 @@
         <div class="form-group">
           <input type="text" th:field="*{description}" placeholder="Cel i Opis Fundacji" />
         </div>
-        <select class="select-css" th:field="*{active} placeholder="Status">
+        <select class="select-css" th:field="*{active}" placeholder="Status">
           <option th:value="true">Aktywna</option>
           <option th:value="false">Nieaktywna</option>
         </select>
         <div class="form-group">
           <input type="hidden" th:field="*{created}"/>
+          <input type="hidden" th:field="*{id}"/>
           <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
           <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
         </div>
-<button onclick="checkIfInstitutionExist()"></button>
-        <span id="allinstDiv"></span><br/>
-        <span id="fundationNameDiv"></span><br/>
+
         <div style="min-width: 31%;" class="form-group form-group--buttons">
           <button style="min-width: 31%;" type="submit" onclick="return checkIfInstitutionExist()" class="btn">Zapisz zmiany</button>
         </div>
       </form>
     </section>
-    Fundacje:
-    <div th:each="i : ${institutions}" th:text="${i.name}" class="allInst"></div><br/><br/>
+
     <footer>
       <span th:include="fragments/footer :: footer"></span>
     </footer>

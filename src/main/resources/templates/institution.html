@@ -42,7 +42,7 @@
         </tr>
         <tr style="border: solid 1px" th:each="institutionList: ${institutions}">
           <td  sec:authorize="hasRole('ROLE_ADMIN')" style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły i móc edytować" class="tables" >
-            <a  th:href="@{/admin/institutionEdit/{id}(id=${institutionList.id})}"><div th:text="${institutionList.name}"></div></a>
+            <a  th:href="@{/admin/editInstitution/{id}(id=${institutionList.id})}"><div th:text="${institutionList.name}"></div></a>
           </td>
           <td th:if="${institutionList.active == true}"  sec:authorize="!hasRole('ROLE_ADMIN')" class="tables" th:text="${institutionList.name}"></td>
           <td th:if="${institutionList.active == true}" sec:authorize="isAnonymous()" class="tables" th:text="${institutionList.name}"></td>

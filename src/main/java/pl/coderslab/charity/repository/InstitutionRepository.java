@@ -15,6 +15,9 @@ public interface InstitutionRepository extends JpaRepository<Institution, Long> 
     @Query("Select i from Institution i order by i.active desc")
     List<Institution> getInstitution();
 
+    @Query("Select i from Institution i where i.active = true order by i.active desc")
+    List<Institution> getActiveInstitution();
+
     @Query("Select i from Institution i where i.id % 2 = 0 and i.active = true")
     List<Institution> getInstitutionEven();
 

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface DonationRepository extends JpaRepository<Donation, Long> {
 
-    @Query("Select d from Donation d join fetch d.categories c")
+    @Query("Select distinct d from Donation d join fetch d.categories c order by d.active desc,d.pickUpDate,d.pickUpTime,d.created")
     List<Donation> getDonation();
 
     @Query(value = "Select count(*) from donations",nativeQuery = true)
@@ -21,10 +21,10 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     @Query(value = "Select sum(quantity) from donations",nativeQuery = true)
     int SumOfDonation();
 
-    @Query("Select distinct d from Donation d join fetch d.users u join fetch d.categories c where u.email = ?1 order by d.active,d.pickUpDate,d.pickUpTime,d.created")
+    @Query("Select distinct d from Donation d join fetch d.users u join fetch d.categories c where u.email = ?1 order by d.active desc,d.pickUpDate,d.pickUpTime,d.created")
     List<Donation> getDonationByUserEmail(String email);
 
-    @Query("Select d from Donation d where d.id = ?1")
+    @Query("Select distinct d from Donation d where d.id = ?1 order by d.active desc,d.pickUpDate,d.pickUpTime,d.created")
     Donation getDonationById(Long id);
 
 }

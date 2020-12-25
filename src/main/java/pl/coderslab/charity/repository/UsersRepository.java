@@ -11,11 +11,8 @@ import java.util.List;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
 
-    @Query("Select u from Users u where u.active = true")
+    @Query("Select u from Users u order by u.usersRoles.role desc,u.active desc")
     List<Users> getUsers();
-
-    @Query("Select u from Users u where u.active = false")
-    List<Users> getDeactivatedUsers();
 
 
     boolean existsByUsername(String username);
@@ -38,7 +35,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query("Select u from Users u where u.id = ?1")
     Users getUsersById(Long id);
 
-    @Query(value="Select active from users where id = ?1")
+    @Query(value="Select active from users where id = ?1",nativeQuery = true)
     boolean readyToDelete(Long id);
 
 }

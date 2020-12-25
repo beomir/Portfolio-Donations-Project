@@ -46,7 +46,7 @@ public class DonationController {
         List<Category> categories = categoryService.getCategory();
         model.addAttribute("categories", categories);
 
-        List<Institution> institutions = institutionService.getInstitution();
+        List<Institution> institutions = institutionService.getActiveInstitution();
         model.addAttribute("institutions", institutions);
 
         Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
@@ -84,7 +84,7 @@ public class DonationController {
         Donation donation = donationService.getDonationById(id);
         model.addAttribute("donations", donation);
 
-        List<Institution> institutions = institutionService.getInstitution();
+        List<Institution> institutions = institutionService.getActiveInstitution();
         model.addAttribute("institutions", institutions);
 
         model.addAttribute("localDateTime", LocalDateTime.now());
@@ -111,6 +111,7 @@ public class DonationController {
         model.addAttribute("localDateTime", LocalDateTime.now());
         return "donationList";
     }
+
 
 //deactivate Donation - make them receipt
     @GetMapping("myFundraising/deactivate/{id}")

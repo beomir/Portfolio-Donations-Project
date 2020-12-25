@@ -8,10 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.app.SecurityUtils;
-import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.Users;
-import pl.coderslab.charity.service.DonationService;
-import pl.coderslab.charity.service.UsersService;
+import pl.coderslab.charity.entity.*;
+import pl.coderslab.charity.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,13 +20,18 @@ import java.util.List;
 public class UsersController {
 
     private final UsersService usersService;
+    private final UsersRolesService usersRolesService;
     private final DonationService donationService;
+    private final InstitutionService institutionService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public UsersController(UsersService usersService, DonationService donationService) {
+    public UsersController(UsersService usersService, UsersRolesService usersRolesService, DonationService donationService, InstitutionService institutionService, CategoryService categoryService) {
         this.usersService = usersService;
+        this.usersRolesService = usersRolesService;
         this.donationService = donationService;
-
+        this.institutionService = institutionService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/register")
@@ -110,8 +113,8 @@ public class UsersController {
     public String UserForm(Model model){
         model.addAttribute("user", new Users());
 
-        List<Users> users = usersService.getUsers();
-        model.addAttribute("users", users);
+        List<UsersRoles> usersRoles = usersRolesService.getUsersRoles();
+        model.addAttribute("usersRoles", usersRoles);
 
         String username = usersService.FindUsernameByEmail(SecurityUtils.username());
         model.addAttribute("username", username);
@@ -127,7 +130,7 @@ public class UsersController {
     @PostMapping("/admin/formUser")
     public String userAdd(Users users) {
         usersService.add(users);
-        return "redirect:/admin/userList";
+        return "redirect:/admin/usersList";
     }
 
 
@@ -143,6 +146,9 @@ public class UsersController {
         Users user = usersService.getUsersById(id);
         model.addAttribute("user", user);
 
+        List<UsersRoles> usersRoles = usersRolesService.getUsersRoles();
+        model.addAttribute("usersRoles", usersRoles);
+
         List<Users> users = usersService.getUsers();
         model.addAttribute("users", users);
 
@@ -154,7 +160,7 @@ public class UsersController {
     @PostMapping("/admin/editUser")
     public String institutionEditPost(Users users) {
         usersService.add(users);
-        return "redirect:/admin/userList";
+        return "redirect:/admin/usersList";
     }
 
     @GetMapping("/admin/usersList")
@@ -172,25 +178,72 @@ public class UsersController {
         return "usersList";
     }
 
-    //deactivate Institution
-    @GetMapping("/admin/usersList/deactivate/{id}")
+    //deactivate User
+    @GetMapping("/admin/users/deactivate/{id}")
     public String deactivateUser(@PathVariable Long id) {
         usersService.deactivateUsers(id);
         return "redirect:/admin/usersList";
     }
 
-    //activate Institution
-    @GetMapping("/admin/usersList/activate/{id}")
+    //activate User
+    @GetMapping("/admin/users/activate/{id}")
     public String activateUser(@PathVariable Long id) {
         usersService.activateUsers(id);
         return "redirect:/admin/usersList";
     }
 
-    //delete Institution
-    @GetMapping("/admin/usersList/delete/{id}")
+    //delete User
+    @GetMapping("/admin/users/delete/{id}")
     public String removeUser(@PathVariable Long id) {
         usersService.deleteUsers(id);
         return "redirect:/admin/usersList";
+    }
+
+    //donation Managment
+    @GetMapping("/admin/donationListAll")
+    public String userFundraisingListAll(Model model) {
+        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
+        model.addAttribute("username", username);
+
+        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
+        model.addAttribute("userId", userId);
+
+        List<Donation> donationListAll = donationService.getDonation();
+        model.addAttribute("donationList", donationListAll);
+
+        model.addAttribute("localDateTime", LocalDateTime.now());
+        return "donationListAll";
+    }
+
+    @GetMapping("/admin/donationsCreation")
+    public String userFundraisingList(Model model) {
+        model.addAttribute("donation", new Donation());
+
+        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
+        model.addAttribute("username", username);
+
+        List<Category> categories = categoryService.getActiveCategory();
+        model.addAttribute("categories", categories);
+
+        List<Institution> institutions = institutionService.getActiveInstitution();
+        model.addAttribute("institutions", institutions);
+
+        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
+        model.addAttribute("userId", userId);
+
+        List<Users> users = usersService.getUsers();
+        model.addAttribute("usersList", users);
+
+        model.addAttribute("localDateTime", LocalDateTime.now());
+        return "donationsCreation";
+
+
+    }
+
+    @PostMapping("/admin/donationsCreation")
+    public String creatDonation(Donation donation) {
+        donationService.add(donation);
+        return "redirect:/admin/donationListAll";
     }
 
 }

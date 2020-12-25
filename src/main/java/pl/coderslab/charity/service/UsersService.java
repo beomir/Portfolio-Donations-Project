@@ -10,9 +10,7 @@ public interface UsersService {
 
     void addWithoutCodePass(Users users);
 
-
     List<Users> getUsers();
-
 
     Users findById(Long id);
 

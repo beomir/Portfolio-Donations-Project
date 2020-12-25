@@ -9,7 +9,7 @@
                 <div>Użytkownicy</div>
                 <ul class="dropdown">
                     <li><a th:href="@{/admin/usersList}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/usersCreation}">Stwórz Użytkownika</a></li>
+                    <li><a th:href="@{/admin/formUser}">Stwórz Użytkownika</a></li>
                 </ul>
             </li>
         </ul>
@@ -19,8 +19,8 @@
             <li  class="logged-user">
                 <div>Dotacje</div>
                 <ul class="dropdown">
-                    <li><a th:href="@{/admin/dotationsList}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/dotationsCreation}">Dodaj Donacje</a></li>
+                    <li><a th:href="@{/admin/donationListAll}">Wyświetl liste</a></li>
+                    <li><a th:href="@{/admin/donationsCreation}">Dodaj Dotacje</a></li>
                 </ul>
             </li>
         </ul>
@@ -31,7 +31,7 @@
                 <div>Kategorie</div>
                 <ul class="dropdown">
                     <li><a th:href="@{/admin/categoryList}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/categoryCreation}">Dodaj Kategorie</a></li>
+                    <li><a th:href="@{/admin/formCategory}">Dodaj Kategorie</a></li>
                 </ul>
             </li>
         </ul>
