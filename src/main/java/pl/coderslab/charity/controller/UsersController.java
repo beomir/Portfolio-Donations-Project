@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.app.SecurityUtils;
+import pl.coderslab.charity.app.SendEmailService;
 import pl.coderslab.charity.entity.*;
 import pl.coderslab.charity.service.*;
 
@@ -24,14 +25,16 @@ public class UsersController {
     private final DonationService donationService;
     private final InstitutionService institutionService;
     private final CategoryService categoryService;
+    private final SendEmailService sendEmailService;
 
     @Autowired
-    public UsersController(UsersService usersService, UsersRolesService usersRolesService, DonationService donationService, InstitutionService institutionService, CategoryService categoryService) {
+    public UsersController(UsersService usersService, UsersRolesService usersRolesService, DonationService donationService, InstitutionService institutionService, CategoryService categoryService, SendEmailService sendEmailService) {
         this.usersService = usersService;
         this.usersRolesService = usersRolesService;
         this.donationService = donationService;
         this.institutionService = institutionService;
         this.categoryService = categoryService;
+        this.sendEmailService = sendEmailService;
     }
 
     @GetMapping("/register")
@@ -48,9 +51,15 @@ public class UsersController {
     }
 
     @PostMapping("register")
-    public String add(Users users) {
+    public String add(Users users,String email) {
         usersService.add(users);
-        return "redirect:/index";
+        sendEmailService.sendEmail(email,"Witaj w serwisie CharityNieboska","Potwierdzenie rejestracji");
+        return "redirect:/register-confirmation";
+    }
+
+    @RequestMapping("/register-confirmation")
+    public String registerConfirmation(){
+        return "register-confirmation";
     }
 
     @GetMapping("/login")
