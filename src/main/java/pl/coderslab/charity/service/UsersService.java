@@ -8,6 +8,8 @@ public interface UsersService {
 
     void add(Users users);
 
+    void registry(Users users);
+
     void addWithoutCodePass(Users users);
 
     List<Users> getUsers();

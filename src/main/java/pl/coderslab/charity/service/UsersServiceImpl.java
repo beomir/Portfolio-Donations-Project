@@ -2,10 +2,10 @@ package pl.coderslab.charity.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.app.SecurityUtils;
-import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.Users;
 import pl.coderslab.charity.repository.UsersRepository;
 
@@ -17,23 +17,37 @@ import java.util.List;
 public class UsersServiceImpl implements pl.coderslab.charity.service.UsersService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
 
 
     @Autowired
-    public UsersServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
+    public UsersServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
 
+        this.mailSender = mailSender;
+    }
+
+    @Override
+    public void registry(Users users) {
+        users.setPassword(passwordEncoder.encode(users.getPassword()));
+        users.setActivateToken(SecurityUtils.uuidToken());
+        users.setActive(false);
+        usersRepository.save(users);
     }
 
     @Override
     public void add(Users users) {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
+        users.setActivateToken(SecurityUtils.uuidToken());
+        users.setActive(true);
         usersRepository.save(users);
     }
 
     @Override
     public void addWithoutCodePass(Users users) {
+        users.setActivateToken(SecurityUtils.uuidToken());
+        users.setActive(true);
         usersRepository.save(users);
     }
 

@@ -52,8 +52,8 @@ public class UsersController {
 
     @PostMapping("register")
     public String add(Users users,String email) {
-        usersService.add(users);
-        sendEmailService.sendEmail(email,"Witaj w serwisie CharityNieboska","Potwierdzenie rejestracji");
+        usersService.registry(users);
+        sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje na: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Check</a></p>","Potwierdzenie rejestracji");
         return "redirect:/register-confirmation";
     }
 

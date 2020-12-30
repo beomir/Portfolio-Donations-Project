@@ -42,7 +42,9 @@ public class Users {
 
     private String changeBy;
 
-    public Users(Long id, String username, String password, String created, String last_update, UsersRoles usersRoles, String email, boolean active, String changeBy,String lastName) {
+    private String activateToken;
+
+    public Users(Long id, String username, String password, String created, String last_update, UsersRoles usersRoles, String email, boolean active, String changeBy,String lastName,String activateToken) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -53,6 +55,7 @@ public class Users {
         this.active = active;
         this.changeBy = changeBy;
         this.lastName = lastName;
+        this.activateToken = activateToken;
     }
 
     @Override
@@ -67,6 +70,7 @@ public class Users {
                 ", last_update='" + last_update + '\'' +
                 ", active=" + active +
                 ", changeBy='" + changeBy + '\'' +
+                ", activateToken='" + activateToken + '\'' +
                 '}';
     }
 }

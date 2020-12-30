@@ -40,47 +40,54 @@
         </div>
 
         <div style="min-width: 31%;" class="form-group form-group--buttons">
-          <button style="min-width: 31%;" type="submit" onclick="return checkIfInstitutionExistSecond()" class="btn">Dodaj Fundacje</button>
+          <button onclick="return checkIfInstitutionExist()" style="min-width: 31%;" type="submit"  class="btn">Dodaj Fundacje</button>
         </div>
       </form>
 
 
     </section>
-    <div style="visibility:hidden;">Fundacje:</div>
-    <div th:each="i : ${institutions}" th:text="${i.name}" class="allInst" style="visibility: hidden"></div><br/><br/>
-    <button style="margin-left: auto;margin-right: auto;font-size: 25px" onclick="checkIfInstitutionExist()">Check by JS if Institution exist</button>
-    <span id="allinstDiv"></span>
-    <span id="fundationNameDiv"></span>
+<!--    <div style="visibility:hidden;">Fundacje:</div>-->
+    <span th:each="i : ${institutions}" th:text="${i.name}" class="allInst" style="visibility: hidden"></span>
+<!--    <br/><br/>-->
+<!--    <button style="margin-left: auto;margin-right: auto;font-size: 25px" onclick="checkIfInstitutionExist()">Check by JS if Institution exist</button>-->
+<!--    <span id="allinstDiv"></span>-->
+<!--    <span id="fundationNameDiv"></span>-->
     <footer>
       <span th:include="fragments/footer :: footer"></span>
     </footer>
     <script type="text/javascript">
+      //TODO jQuery checker
+      // $('#fundationName').on('keyup', function() {
+      //   var institutionFromDB = document.getElementsByClassName('allInst');
+      //   for(var i=0; i < institutionFromDB.length; i++) {
+      //     if ($('#fundationName').val().includes(institutionFromDB[i].textContent)) {
+      //       $('#nameError').html('Fundacja istnieje w bazie danych').css('color', 'red');
+      //     } else
+      //       $('#nameError').html('Można dodać do bazy danych').css('color', 'green');
+      //   }
+      // })
 
       function checkIfInstitutionExist() {
         var fundationName = document.getElementById("fundationName").value;
         var instittionFromDB = document.getElementsByClassName('allInst');
-        // document.getElementById("allinstDiv").innerHTML = inputElements;
         var checkedValue = ""
         for(var i=0; i < instittionFromDB.length; i++){
-          checkedValue +=  instittionFromDB[i].value + ", "
-          // if(inputElements[i].value == fundationName){
-          //   alert("Taka nazwa fundacji już istnieje w bazie danych")
-          //   returnToPreviousPage();
-          //   return false;
-          // }
+          checkedValue +=  instittionFromDB[i].textContent + ", "
+          if(instittionFromDB[i].textContent == fundationName){
+            alert("Taka nazwa fundacji już istnieje w bazie danych")
+            returnToPreviousPage();
+            return false;
+          }
+          if(fundationName==null || fundationName == ""){
+            alert("Nazwa fundacji nie moze być pusta")
+            returnToPreviousPage();
+            return false;
+          }
         }
-        document.getElementById("allinstDiv").innerHTML = "Try to catch value from th:each on institution by JS: " + checkedValue;
-        document.getElementById("fundationNameDiv").innerHTML = "Added by form: " + fundationName;
+        // document.getElementById("allinstDiv").innerHTML = "Try to catch value from th:each on institution by JS: " + checkedValue;
+        // document.getElementById("fundationNameDiv").innerHTML = "Added by form: " + fundationName;
       }
 
-      function checkIfInstitutionExistSecond() {
-        var fundationName = document.getElementById("fundationName").value;
-        if(fundationName==null || fundationName == ""){
-          alert("Nazwa fundacji nie moze być pusta")
-          returnToPreviousPage();
-          return false;
-        }
-      }
 
 
       function returnToPreviousPage() {

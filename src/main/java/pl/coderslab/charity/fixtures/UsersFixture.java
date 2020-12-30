@@ -17,15 +17,15 @@ public class UsersFixture {
     private UsersRolesService usersRolesService;
 
     private List<Users> usersList = Arrays.asList(
-             new Users(null, "Magda", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"StrojemMagdaM@meta.ua",true,"system","Mróz"),
-             new Users(null, "Piotr", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"buDUJEmPiotrP@wp.pl",true,"system","Peterka"),
-             new Users(null, "Gaweł", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"buDUJEmGawelG@wp.pl",true,"system","Graź"),
-             new Users(null, "Ruslan", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"RuslanR@BuldMate.com",true,"system","Rybik"),
-             new Users(null, "Fernandos", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"FernandosF@FNdMdAL.pt",true,"system","Alonsos"),
-             new Users(null, "Benito", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"BenitoB@Eni.it",true,"system","Bussosiliis"),
-             new Users(null, "Zladko", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"ZladkoZ@HS.sb",true,"system","zacharisz"),
-             new Users(null, "admin", "admin", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"adminCharity@gmail.com",true,"system",""),
-             new Users(null, "Andrzej", "admin", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"beomir89@gmail.com",true,"system","Leszka")
+             new Users(null, "Magda", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"StrojemMagdaM@meta.ua",true,"system","Mróz",null),
+             new Users(null, "Piotr", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"buDUJEmPiotrP@wp.pl",true,"system","Peterka",null),
+             new Users(null, "Gaweł", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"buDUJEmGawelG@wp.pl",true,"system","Graź",null),
+             new Users(null, "Ruslan", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"RuslanR@BuldMate.com",true,"system","Rybik",null),
+             new Users(null, "Fernandos", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"FernandosF@FNdMdAL.pt",true,"system","Alonsos",null),
+             new Users(null, "Benito", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"BenitoB@Eni.it",true,"system","Bussosiliis",null),
+             new Users(null, "Zladko", "123", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"ZladkoZ@HS.sb",true,"system","zacharisz",null),
+             new Users(null, "admin", "admin", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"adminCharity@gmail.com",true,"system","",null),
+             new Users(null, "Andrzej", "admin", TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),null,"beomir89@gmail.com",true,"system","Leszka",null)
     );
 
     @Autowired
