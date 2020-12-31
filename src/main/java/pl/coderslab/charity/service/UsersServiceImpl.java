@@ -2,7 +2,6 @@ package pl.coderslab.charity.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.app.SecurityUtils;
@@ -17,15 +16,13 @@ import java.util.List;
 public class UsersServiceImpl implements pl.coderslab.charity.service.UsersService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JavaMailSender mailSender;
+
 
 
     @Autowired
-    public UsersServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
+    public UsersServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
-
-        this.mailSender = mailSender;
     }
 
     @Override
@@ -87,6 +84,12 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     }
 
     @Override
+    public Users getUserByActivateToken(String activateToken) {
+        return usersRepository.getUserByActivateToken(activateToken);
+    }
+
+
+    @Override
     public void deactivateUsers(Long id) {
         Users users = usersRepository.getOne(id);
         users.setActive(false);
@@ -105,10 +108,34 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     }
 
     @Override
-    public void deleteUsers(Long id) {
-        if (!usersRepository.readyToDelete(id)) {
-            usersRepository.deleteById(id);
-        }
-
+    public void setActivateUserAfterEmailValidation(String activateToken){
+        Users user = usersRepository.getUserByActivateToken(activateToken);
+        user.setActive(true);
+        user.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        user.setChangeBy("Activation");
+        user.setActivateToken(SecurityUtils.uuidToken());
+        usersRepository.save(user);
     }
+
+    @Override
+    public void deleteUsers(Long id) {
+        Long userId = usersRepository.FindUserIdByEmail(SecurityUtils.usernameForActivations());
+
+        if(usersRepository.donationsQtyForSelectedUser(id) == 0) {
+
+            if (!usersRepository.readyToDelete(id) && !id.equals(userId)) {
+                usersRepository.deleteById(id);
+            }
+
+        }
+        else{
+            if (!usersRepository.readyToDelete(id) && !id.equals(userId)) {
+                usersRepository.deleteDonationCategoriesForDeletingUser(id);
+                usersRepository.deleteDonationsForDeletingUser(id);
+                usersRepository.deleteById(id);
+            }
+        }
+    }
+
+
 }

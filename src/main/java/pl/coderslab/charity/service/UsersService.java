@@ -30,4 +30,8 @@ public interface UsersService {
 
     Users getUsersById(Long id);
 
+    Users getUserByActivateToken(String activateToken);
+
+    void setActivateUserAfterEmailValidation(String activateToken);
+
 }

@@ -189,8 +189,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const commentEvent = document.getElementById("comment-event");
 
     const quantity = document.getElementById("quantity");
-    const institution = document.querySelector(".checkboxRadio:checked");
-    var inputElements = document.getElementsByClassName('categoryCheckbox');
+
+    const institution = document.querySelector('input[class="checkboxRadio"]:checked ~ span.description div.title').innerHTML;
+    var inputElements = document.querySelectorAll('input[name="categories"]:checked ~ span.description');
     const street = document.getElementById("street");
     const city = document.getElementById("city");
     const zipCode = document.getElementById("zipCode");
@@ -210,53 +211,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const timeNew = document.createElement("span");
     const commentNew = document.createElement("span");
 
-    institutions();
 
-    var institutionString;
-    function institutions(){
-      if(institution.value==1){
-        institutionString = " \"Bez domu\" ";
-      }
-      else if(institution.value==2){
-        institutionString = " \"Dbam o Zdrowie\" ";
-      }
-      else if(institution.value==3){
-        institutionString = " \"A kogo\" ";
-      }
-      else if(institution.value==4){
-        institutionString = " \"Dla dzieci\" ";
-      }
-      else if(institution.value==5){
-        institutionString = " \"Poszol WON!\" ";
-      }
-    }
 
     var checkedValue = "";
     var categories;
     for(var i=0; inputElements[i]; ++i){
-      if(inputElements[i].checked){
-        if(inputElements[i].value == 1){
-          categories = "ubrania, które nadają się do ponownego użycia";
-        }
-        else if(inputElements[i].value== 2){
-          categories = "ubrania, do wyrzucenia";
-        }
-        else if(inputElements[i].value==3){
-          categories = "książki";
-        }
-        else if(inputElements[i].value==4){
-          categories = "zabawki";
-        }
-        else if(inputElements[i].value ==5){
-          categories = "inne";
-        }
+      if(inputElements[i].innerHTML){
+        categories = inputElements[i].innerHTML;
         checkedValue +=  categories + ", " ;
       }
     }
 
     console.log(
         checkedValue
-        ,institution.value
+
         ,quantity.value
         ,street.value
         ,city.value
@@ -268,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function() {
     )
 
     newRow.innerHTML = `${quantity.value} `
-    institutionNew.innerHTML = institutionString;
+    institutionNew.innerHTML = institution;
     categoriesNew.innerHTML = checkedValue;
     streetNew.innerHTML = `${street.value} `
     cityNew.innerHTML = `${city.value} `

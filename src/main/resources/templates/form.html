@@ -76,44 +76,11 @@
           <div data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
 
-            <div class="form-group form-group--checkbox">
+            <div th:each="category: ${categories}" class="form-group form-group--checkbox">
               <label>
-                <input class="categoryCheckbox" type="checkbox" th:value="1" id="categories" name="categories"/>
+                <input type="checkbox" name="categories" th:value="${category.id}"/>
                 <span class="checkbox"></span>
-                <span class="description">ubrania, które nadają się do ponownego użycia</span>
-              </label>
-            </div>
-
-
-            <div class="form-group form-group--checkbox">
-              <label>
-                <input class="categoryCheckbox" type="checkbox" th:value="2" id="categories" name="categories"/>
-                <span class="checkbox"></span>
-                <span class="description">ubrania, do wyrzucenia</span>
-              </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-              <label>
-                <input class="categoryCheckbox" type="checkbox" th:value="4" id="categories" name="categories"/>
-                <span class="checkbox"></span>
-                <span class="description">zabawki</span>
-              </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-              <label>
-                <input class="categoryCheckbox" type="checkbox" th:value="3" id="categories" name="categories"/>
-                <span class="checkbox"></span>
-                <span class="description">książki</span>
-              </label>
-            </div>
-
-            <div class="form-group form-group--checkbox">
-              <label>
-                <input class="categoryCheckbox" type="checkbox" th:value="5" id="categories" name="categories"/>
-                <span class="checkbox"></span>
-                <span class="description">inne</span>
+                <span th:text="${category.name}" class="description"></span>
               </label>
             </div>
 
@@ -145,9 +112,9 @@
           <div data-step="3">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
-            <div class="form-group form-group--checkbox">
-              <label th:each="i : ${institutions}">
-                <input class="checkboxRadio" type="radio" th:field="*{donation.institution.id}" th:value="${i.id}" id="institution"/>
+            <div  th:each="i : ${institutions}" class="form-group form-group--checkbox">
+              <label>
+                <input class="checkboxRadio" type="radio" name="institution" th:field="*{donation.institution.id}" th:value="${i.id}" />
                 <span  class="checkbox radio"></span>
                 <span  class="description">
                   <div th:value="${i.id}" th:text="${i.name}" class="title" ></div>

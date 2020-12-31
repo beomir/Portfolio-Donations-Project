@@ -47,7 +47,7 @@
             <a th:href="@{/admin/editUser/{id}(id=${userList.id})}"><div id="username" th:text="${userList.username}" th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}"></div></a>
           </td>
           <td th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}"  id="lastname" class="tables" th:text="${userList.lastName}"></td>
-          <td th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}"  class="tables" th:text="${userList.email}"></td>
+          <td th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}"  id="email" class="tables" th:text="${userList.email}"></td>
           <td th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}"  class="tables" th:text="*{#strings.replace(#strings.substring(userList.created,0,19),'T',' ')}"></td>
           <td th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}"  class="tables" th:text="*{#strings.replace(#strings.substring(userList.last_update,0,19),'T',' ')}"></td>
           <td th:style="${userList.usersRoles.role.equals('ROLE_ADMIN') ? 'color: blue' : 'color: black'}" class="tables" th:text="${userList.changeBy}"></td>
@@ -86,18 +86,24 @@
 
         function deleteAlert()
         {
-          var userStatusActive = document.getElementById("userStatusActive").value;
-          var userStatusDeactivate = document.getElementById("userStatusDeactivate").value;
-          if(userStatusActive==true){
+          var userStatusActive = document.getElementById("userStatusActive").textContent;
+          var userStatusDeactivate = document.getElementById("userStatusDeactivate").textContent;
+          var loggedEmail = document.getElementById("loggedEmail").textContent;
+          var email = document.getElementById("email").textContent;
+
+          if(loggedEmail == email){
+            alert("Naprawde probujesz usunac samego siebie ?")
+          }
+          if(userStatusActive == 'Aktywny'){
             alert("Użytkownik nie może zostać usunięty dopóty jego status jest aktywny")
           }
-          if(userStatusDeactivate==false){
+          if(userStatusDeactivate =='Dezaktywowany'){
             alert("Użytkownik usunięty")
           }
         }
         function deactivateUser(){
-          var username = document.getElementById("username").value;
-          var lastname = document.getElementById("lastname").value;
+          var username = document.getElementById("username").textContent;
+          var lastname = document.getElementById("lastname").textContent;
           alert("Można usunąć użytkownika: " + username + " " + lastname )
         }
   </script>

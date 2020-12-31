@@ -1,6 +1,8 @@
 package pl.coderslab.charity.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class UsersController {
@@ -53,8 +56,17 @@ public class UsersController {
     @PostMapping("register")
     public String add(Users users,String email) {
         usersService.registry(users);
-        sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje na: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Check</a></p>","Potwierdzenie rejestracji");
+        sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje klikając: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Tutaj</a></p>","Potwierdzenie rejestracji");
         return "redirect:/register-confirmation";
+    }
+
+
+    @GetMapping("/loginCheck/{activateToken}")
+    public String registryValidation(@PathVariable String activateToken, Model model){
+        Users user = usersService.getUserByActivateToken(activateToken);
+        model.addAttribute("user", user);
+        usersService.setActivateUserAfterEmailValidation(activateToken);
+        return "loginCheck";
     }
 
     @RequestMapping("/register-confirmation")
