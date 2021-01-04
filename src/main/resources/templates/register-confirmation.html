@@ -28,12 +28,13 @@
         <br/><br/>
         <div style="display: block;text-align: center">
         <h3 style="font-size: 16px">
-          <span>Na Twój email zostało wysłane potwierdzenie rejstracji. Potwierdz swoją rejestrację klikając w link z maila</span>
+          <span th:if="${registrationStatus} == true" th:include="fragments/registrationSuccess :: registrationSuccess"></span>
+          <span th:if="${registrationStatus} == false" th:include="fragments/registrationUnsuccess :: registrationUnsuccess"></span>
             <br/><br/>
         </h3>
         <br/><br/><br/><br/>
         <h4 style="font-size: 13px">
-          Lub skontaktuj sie znami za pomocą poniższego formularza!
+          Jezeli masz pytania to skontaktuj sie znami za pomocą poniższego formularza
         <br/><br/>  <span style="font-weight: bold"><a class="hovery" style="cursor: pointer" th:href="@{/index}">Wróc do strony głównej</a></span>
         </h4>
         </div>

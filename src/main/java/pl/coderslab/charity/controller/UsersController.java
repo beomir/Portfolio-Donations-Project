@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 
 @Controller
 public class UsersController {
@@ -56,13 +56,8 @@ public class UsersController {
     @PostMapping("register")
     public String add(Users users,String email) {
         usersService.registry(users);
-        if(usersService.registrationStatus())
-        {
         sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje klikając: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Tutaj</a></p>","Potwierdzenie rejestracji");
         return "redirect:/register-confirmation";
-        }
-        else
-            return "redirect:/register-confirmation-unsuccess";
     }
 
 
@@ -75,15 +70,11 @@ public class UsersController {
     }
 
     @RequestMapping("/register-confirmation")
-    public String registerConfirmation(){
+    public String registerConfirmation(Model model){
+        model.addAttribute("registrationStatus", usersService.registrationStatus());
         return "register-confirmation";
     }
-
-    @RequestMapping("/register-confirmation-unsuccess")
-    public String registerConfirmationUnsuccess(){
-        return "register-confirmation-unsuccess";
-    }
-
+    
 
     @GetMapping("/login")
     public String login(Model model) {
