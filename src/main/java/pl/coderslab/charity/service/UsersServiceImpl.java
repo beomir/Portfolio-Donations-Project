@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.app.SecurityUtils;
+import pl.coderslab.charity.app.TimeUtils;
 import pl.coderslab.charity.entity.Users;
 import pl.coderslab.charity.repository.UsersRepository;
 
@@ -17,6 +18,7 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private boolean registrationValidation;
+    private boolean resetPassword;
 
 
 
@@ -45,11 +47,45 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
             registrationStatus();
         }
     }
+
+    @Override
+    public void resetPassword(Users users) {
+        if(usersRepository.getByEmail(users.getEmail()) != null) {
+            String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[%&@#$^*?_~])(?=\\S+$).{8,}"; // for Test ! is not added
+            if (users.getPassword().matches(pattern)) {
+                users.setId(usersRepository.getByEmail(users.getEmail()).getId());
+                users.setChangeBy("Reset Password by: " + SecurityUtils.usernameForActivations());
+                users.setLast_update(TimeUtils.timeNowLong());
+                users.setUsersRoles(usersRepository.getByEmail(users.getEmail()).getUsersRoles());
+                users.setUsername(usersRepository.getByEmail(users.getEmail()).getUsername());
+                users.setLastName(usersRepository.getByEmail(users.getEmail()).getLastName());
+                users.setCreated(usersRepository.getByEmail(users.getEmail()).getCreated());
+                users.setPassword(passwordEncoder.encode(users.getPassword()));
+                users.setActivateToken(SecurityUtils.uuidToken());
+                users.setActive(true);
+                resetPassword = true;
+                resetPasswordStatus();
+                usersRepository.save(users);
+            } else {
+                resetPassword = false;
+                resetPasswordStatus();
+            }
+        }
+    }
+
     @Override
     public boolean registrationStatus() {
         return registrationValidation;
     }
+    @Override
+    public boolean resetPasswordStatus() {
+        return resetPassword;
+    }
 
+    @Override
+    public Users getByEmail(String email) {
+        return usersRepository.getByEmail(email);
+    }
 
 
     @Override

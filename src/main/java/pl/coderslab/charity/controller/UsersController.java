@@ -27,6 +27,8 @@ public class UsersController {
     private final InstitutionService institutionService;
     private final CategoryService categoryService;
     private final SendEmailService sendEmailService;
+    private boolean userExists;
+    private boolean activateTokenActive;
 
     @Autowired
     public UsersController(UsersService usersService, UsersRolesService usersRolesService, DonationService donationService, InstitutionService institutionService, CategoryService categoryService, SendEmailService sendEmailService) {
@@ -267,4 +269,70 @@ public class UsersController {
         return "redirect:/admin/donationListAll";
     }
 
+
+    //reset Password
+    @GetMapping("/resetPassword")
+    public String resetPassword(Model model) {
+
+        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
+        model.addAttribute("username", username);
+
+        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
+        model.addAttribute("userId", userId);
+
+        List<UsersRoles> usersRoles = usersRolesService.getUsersRoles();
+        model.addAttribute("usersRoles", usersRoles);
+
+        return "resetPassword";
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPasswordPost(String email) {
+        try {
+            sendEmailService.sendEmail(email, "<p>W celu zresetowania hasla kliknij: <a href='http://localhost:8080/passwordRestarted/" + usersService.getByEmail(email).getActivateToken() + "'>Tutaj</a></p>", "Resetowanie hasła");
+            userExists = true;
+            return "redirect:/resetPassword-confirmation";
+        }
+            catch(NullPointerException e) {
+                userExists = false;
+                return "redirect:/resetPassword-confirmation";
+            }
+    }
+
+
+    @RequestMapping("/resetPassword-confirmation")
+    public String resetPasswordConfirmation(Model model){
+        model.addAttribute("userExists", userExists);
+        return "resetPassword-confirmation";
+    }
+
+
+    @GetMapping("/passwordRestarted/{activateToken}")
+    public String passwordRestarted(@PathVariable String activateToken, Model model){
+        try {
+            Users user = usersService.getUserByActivateToken(activateToken);
+            model.addAttribute("user", user);
+            usersService.setActivateUserAfterEmailValidation(activateToken);
+            activateTokenActive = true;
+            model.addAttribute("activateTokenActive", activateTokenActive);
+            return "passwordRestarted";
+        }
+        catch(NullPointerException e) {
+            activateTokenActive = false;
+            model.addAttribute("activateTokenActive", activateTokenActive);
+            return "passwordRestarted";
+        }
+    }
+
+    @PostMapping("/passwordRestarted")
+    public String passwordRestartedPost(Users users) {
+        usersService.resetPassword(users);
+        return "redirect:/passwordRestartedStep2";
+    }
+
+    @GetMapping("/passwordRestartedStep2")
+    public String passwordRestartedFinish(Model model){
+        model.addAttribute("resetPassword", usersService.resetPasswordStatus());
+        return "passwordRestartedStep2";
+    }
 }

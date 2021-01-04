@@ -10,6 +10,8 @@ public interface UsersService {
 
     void registry(Users users);
 
+    void resetPassword(Users users);
+
     void addWithoutCodePass(Users users);
 
     List<Users> getUsers();
@@ -35,4 +37,10 @@ public interface UsersService {
     void setActivateUserAfterEmailValidation(String activateToken);
 
     boolean registrationStatus();
+
+    boolean resetPasswordStatus();
+
+    Users getByEmail(String email);
+
+
 }
