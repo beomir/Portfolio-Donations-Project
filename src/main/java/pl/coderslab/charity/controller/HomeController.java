@@ -61,7 +61,7 @@ public class HomeController {
 
     @PostMapping("contactForm")
     public String contactForm( String message, String name, String surname, String email) {
-        sendEmailService.sendEmailFromContactForm("Message: " + message + ", name: " + name + ", surname: " + surname + ", email: " + email);
+        sendEmailService.sendEmailFromContactForm("<b>Message:</b><i> " + message + "</i>, <b>name: </b><i>" + name + "</i>,<b> surname:</b><i> " + surname + "</i>, <b>email:</b> " + email);
         sendEmailService.sendEmail(email,"Witaj " + name + " " + surname + ", otrzymaliśmy od Ciebię prośbę o kontakt. Skontaktujemy sie z Tobą tak szybko jak będzie to możliwe","Potwierdzenie prośby o kontakt");
         return "redirect:/contactForm-confirmation";
     }
