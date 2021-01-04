@@ -56,8 +56,13 @@ public class UsersController {
     @PostMapping("register")
     public String add(Users users,String email) {
         usersService.registry(users);
+        if(usersService.registrationStatus())
+        {
         sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje klikając: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Tutaj</a></p>","Potwierdzenie rejestracji");
         return "redirect:/register-confirmation";
+        }
+        else
+            return "redirect:/register-confirmation-unsuccess";
     }
 
 
@@ -73,6 +78,12 @@ public class UsersController {
     public String registerConfirmation(){
         return "register-confirmation";
     }
+
+    @RequestMapping("/register-confirmation-unsuccess")
+    public String registerConfirmationUnsuccess(){
+        return "register-confirmation-unsuccess";
+    }
+
 
     @GetMapping("/login")
     public String login(Model model) {

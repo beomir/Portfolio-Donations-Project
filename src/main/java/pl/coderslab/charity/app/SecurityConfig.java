@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/contactForm-confirmation").permitAll()
                 .antMatchers("/loginCheck/**").permitAll()
                 .antMatchers("/contactForm").permitAll()
+                .antMatchers("/register-confirmation-unsuccess").permitAll()
                 .antMatchers("/js/**", "/css/**", "/fonts/**", "/images/**", "/templates/fragments/**").permitAll()
                 .antMatchers("/logged", "/logged/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin", "/admin/**").hasRole("ADMIN")

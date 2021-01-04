@@ -34,4 +34,5 @@ public interface UsersService {
 
     void setActivateUserAfterEmailValidation(String activateToken);
 
+    boolean registrationStatus();
 }

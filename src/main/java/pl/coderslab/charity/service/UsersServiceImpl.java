@@ -16,6 +16,7 @@ import java.util.List;
 public class UsersServiceImpl implements pl.coderslab.charity.service.UsersService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
+    private boolean registrationValidation;
 
 
 
@@ -27,11 +28,29 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
 
     @Override
     public void registry(Users users) {
-        users.setPassword(passwordEncoder.encode(users.getPassword()));
-        users.setActivateToken(SecurityUtils.uuidToken());
-        users.setActive(false);
-        usersRepository.save(users);
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[%&@#$^*?_~])(?=\\S+$).{8,}"; // for Test ! is not added
+        if(!users.getUsername().contains("admin") && users.getUsername() != null && !users.getUsername().isEmpty() && users.getLastName() != null &&
+                !users.getLastName().isEmpty() && users.getEmail() != null && !users.getEmail().isEmpty() && users.getPassword() != null &&
+                users.getPassword().matches(pattern)) {
+            users.setPassword(passwordEncoder.encode(users.getPassword()));
+            users.setActivateToken(SecurityUtils.uuidToken());
+            users.setActive(false);
+            registrationValidation = true;
+            registrationStatus();
+            usersRepository.save(users);
+        }
+        else
+        {
+            registrationValidation = false;
+            registrationStatus();
+        }
     }
+    @Override
+    public boolean registrationStatus() {
+        return registrationValidation;
+    }
+
+
 
     @Override
     public void add(Users users) {
@@ -116,6 +135,7 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
         user.setActivateToken(SecurityUtils.uuidToken());
         usersRepository.save(user);
     }
+
 
     @Override
     public void deleteUsers(Long id) {
