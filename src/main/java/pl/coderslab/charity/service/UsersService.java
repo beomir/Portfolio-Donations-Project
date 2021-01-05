@@ -10,7 +10,7 @@ public interface UsersService {
 
     void registry(Users users);
 
-    void resetPassword(Users users);
+    void resetPassword(Users users, String password2);
 
     void addWithoutCodePass(Users users);
 

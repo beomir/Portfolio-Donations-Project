@@ -325,8 +325,11 @@ public class UsersController {
     }
 
     @PostMapping("/passwordRestarted")
-    public String passwordRestartedPost(Users users) {
-        usersService.resetPassword(users);
+    public String passwordRestartedPost(Users users,String password2) {
+        usersService.resetPassword(users,password2);
+        if(usersService.resetPasswordStatus()) {
+            sendEmailService.sendEmail(users.getEmail(), "<p>Twoje nowe hasło to: <b>" + password2 + "</b>.<br/><br/>Jeżeli nie resetowałeś hasła kliknij: <a href='http://localhost:8080/blockMyAccount/" + usersService.getByEmail(users.getEmail()).getActivateToken() + "'>Tutaj</a></p>", "Nowe Hasło");
+        }
         return "redirect:/passwordRestartedStep2";
     }
 

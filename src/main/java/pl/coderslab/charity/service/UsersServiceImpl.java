@@ -49,10 +49,10 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     }
 
     @Override
-    public void resetPassword(Users users) {
+    public void resetPassword(Users users, String password2) {
         if(usersRepository.getByEmail(users.getEmail()) != null) {
             String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[%&@#$^*?_~])(?=\\S+$).{8,}"; // for Test ! is not added
-            if (users.getPassword().matches(pattern)) {
+            if (users.getPassword().matches(pattern) && users.getPassword().contains(password2)) {
                 users.setId(usersRepository.getByEmail(users.getEmail()).getId());
                 users.setChangeBy("Reset Password by: " + SecurityUtils.usernameForActivations());
                 users.setLast_update(TimeUtils.timeNowLong());
