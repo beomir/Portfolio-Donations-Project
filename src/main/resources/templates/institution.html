@@ -24,7 +24,8 @@
     </header>
 
     <section class="login-page">
-      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz informację dotyczące Fundacji z którymi współpracujemy'"> </h2>
+      <h2 sec:authorize="!isAnonymous()" th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz informację dotyczące Fundacji z którymi współpracujemy'"> </h2>
+      <h2 sec:authorize="isAnonymous()" th:text="'Hej, poniżej znajdziesz informację dotyczące Fundacji z którymi współpracujemy'"> </h2>
     </section>
 
     <div style="text-align: center;background-color: #00BCD4;border-radius: 3px">
@@ -45,7 +46,7 @@
             <a  th:href="@{/admin/editInstitution/{id}(id=${institutionList.id})}"><div th:text="${institutionList.name}"></div></a>
           </td>
           <td th:if="${institutionList.active == true}"  sec:authorize="!hasRole('ROLE_ADMIN')" class="tables" th:text="${institutionList.name}"></td>
-          <td th:if="${institutionList.active == true}" sec:authorize="isAnonymous()" class="tables" th:text="${institutionList.name}"></td>
+<!--          <td th:if="${institutionList.active == true}" sec:authorize="isAnonymous()" class="tables" th:text="${institutionList.name}"></td>-->
           <td th:if="${institutionList.active == true}" sec:authorize="!hasRole('ROLE_ADMIN')" class="tables" th:text="${institutionList.description}"></td>
           <td sec:authorize="hasRole('ROLE_ADMIN')" class="tables" th:text="${institutionList.description}"></td>
           <td  sec:authorize="hasRole('ROLE_ADMIN')" class="tables" th:text="*{#strings.replace(#strings.substring(institutionList.created,0,19),'T',' ')}"></td>
@@ -66,7 +67,7 @@
         </tr>
       </table>
       <br/>
-      <a th:href="@{/admin/formInstitution}"><button style="cursor:pointer;font-size: 20px;font-weight: bold;margin-left: 87%">Dodaj Fundacje</button></a>
+      <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/formInstitution}"><button style="cursor:pointer;font-size: 20px;font-weight: bold;margin-left: 87%">Dodaj Fundacje</button></a>
     </div><br/><br/>
 
     <footer>

@@ -17,27 +17,27 @@
         <span th:include="fragments/header :: header"></span>
         <span sec:authorize="hasRole('ROLE_ADMIN')">
         <br/><br/><br/><br/>
-        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <div  style="font-weight: bold;font-size: 20px" th:text="#{app.logged.a3}">Panel Admina</div>
         <span th:include="fragments/adminNavigation :: adminNavigation"></span>
         </span>
       </nav>
     </header>
 
     <section class="login-page">
-      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz informację dotyczące kategorii'"> </h2>
+      <h2 th:text="#{app.category.h2aa} +' '+  ${username} +' '+ #{app.category.h2a}"> </h2>
     </section>
 
     <div style="text-align: center;background-color: #00BCD4;border-radius: 3px">
-      <div style="color: black;text-align: center;font-size: 20px;font-weight: bold;" th:text="'Kategorie'"></div><br/><br/>
+      <div style="color: black;text-align: center;font-size: 20px;font-weight: bold;" th:text="#{app.category.d1}"></div><br/><br/>
       <table  style="color: black;text-align: left;width:100%;border: solid 1px;">
         <tr style="border: solid 1px">
-          <th class="tables">Nazwa</th>
-          <th class="tables">Stworzona</th>
-          <th class="tables">Ostatnia aktualizacja</th>
-          <th class="tables">Ostatnia zmiana przez</th>
-          <th class="tables">Status</th>
-          <th class="tables"><span id="changeStatus">Zmień status</span></th>
-          <th class="tables"><span id="delete">Usuń</span></th>
+          <th th:text="#{app.category.th1}" class="tables">Nazwa</th>
+          <th th:text="#{app.category.th2}" class="tables">Stworzona</th>
+          <th th:text="#{app.category.th3}" class="tables">Ostatnia aktualizacja</th>
+          <th th:text="#{app.category.th4}" class="tables">Ostatnia zmiana przez</th>
+          <th th:text="#{app.category.th5}" class="tables">Status</th>
+          <th th:text="#{app.category.th6}" class="tables"><span id="changeStatus">Zmień status</span></th>
+          <th th:text="#{app.category.th7}" class="tables"><span id="delete">Usuń</span></th>
         </tr>
         <tr style="border: solid 1px" th:each="categories: ${categories}">
           <td style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły i móc edytować" class="tables" >
@@ -47,16 +47,16 @@
           <td class="tables" th:text="*{#strings.replace(#strings.substring(categories.last_update,0,19),'T',' ')}"></td>
           <td class="tables" th:text="${categories.changeBy}"></td>
           <td th:switch="${categories.active}"  class="tables">
-            <span th:case="true" th:text="Aktywne"></span>
-            <span th:case="false" th:text="Nieaktywne"></span>
-            <span th:case="*" th:text="Nieznany"></span>
+            <span th:case="true" th:text="#{app.category.activate}"></span>
+            <span th:case="false" th:text="#{app.category.deactivate}"></span>
+            <span th:case="*" th:text="#{app.category.other}"></span>
           </td>
           <td th:switch="${categories.active}"  class="tables">
-            <a th:href="@{/admin/categories/deactivate/{id}(id=${categories.id})}"><span th:case="true" th:text="'na nieaktywne'" style="color: red;cursor: pointer;font-weight: bold"></span></a>
-            <a th:href="@{/admin/categories/activate/{id}(id=${categories.id})}"><span th:case="false" th:text="'na aktywne'" style="color: lightgreen;cursor: pointer;font-weight: bold"></span></a>
+            <a th:href="@{/admin/categories/deactivate/{id}(id=${categories.id})}"><span th:case="true" th:text="#{app.category.ondeactivated}" style="color: red;cursor: pointer;font-weight: bold"></span></a>
+            <a th:href="@{/admin/categories/activate/{id}(id=${categories.id})}"><span th:case="false" th:text="#{app.category.onactivate}" style="color: lightgreen;cursor: pointer;font-weight: bold"></span></a>
           </td>
-          <td title="Are you sure with want delete category? Remember that is not possible delete category if some category is assign to donation" class="tables" style="color: #3c3c3c;cursor: pointer;font-weight: bold">
-            <a th:href="@{/admin/categories/delete/{id}(id=${categories.id})}"><span th:text="'Usuń'"></span></a>
+          <td th:title="#{app.category.delete}" class="tables" style="color: #3c3c3c;cursor: pointer;font-weight: bold">
+            <a th:href="@{/admin/categories/delete/{id}(id=${categories.id})}"><span th:text="#{app.category.th7}"></span></a>
           </td>
         </tr>
       </table>

@@ -6,10 +6,10 @@
     <li sec:authorize="hasRole('ROLE_ADMIN')">
         <ul class="nav--actions">
             <li  class="logged-user">
-                <div>Użytkownicy</div>
+                <div th:text="#{app.admin.d1}">Użytkownicy</div>
                 <ul class="dropdown">
-                    <li><a th:href="@{/admin/usersList}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/formUser}">Stwórz Użytkownika</a></li>
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/admin/usersList}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d1a2}" th:href="@{/admin/formUser}">Stwórz Użytkownika</a></li>
                 </ul>
             </li>
         </ul>
@@ -17,10 +17,10 @@
     <li sec:authorize="hasRole('ROLE_ADMIN')">
         <ul class="nav--actions">
             <li  class="logged-user">
-                <div>Dotacje</div>
+                <div th:text="#{app.admin.d2}">Dotacje</div>
                 <ul class="dropdown">
-                    <li><a th:href="@{/admin/donationListAll}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/donationsCreation}">Dodaj Dotacje</a></li>
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/admin/donationListAll}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d2a2}" th:href="@{/admin/donationsCreation}">Dodaj Dotacje</a></li>
                 </ul>
             </li>
         </ul>
@@ -28,10 +28,10 @@
     <li sec:authorize="hasRole('ROLE_ADMIN')">
         <ul class="nav--actions">
             <li  class="logged-user">
-                <div>Kategorie</div>
+                <div th:text="#{app.category.d1}">Kategorie</div>
                 <ul class="dropdown">
-                    <li><a th:href="@{/admin/categoryList}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/formCategory}">Dodaj Kategorie</a></li>
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/admin/categoryList}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d3a2}" th:href="@{/admin/formCategory}">Dodaj Kategorie</a></li>
                 </ul>
             </li>
         </ul>
@@ -39,10 +39,10 @@
     <li sec:authorize="hasRole('ROLE_ADMIN')">
         <ul class="nav--actions">
             <li  class="logged-user">
-                <div>Fundacje</div>
+                <div th:text="#{app.admin.d4}">Fundacje</div>
                 <ul class="dropdown">
-                    <li><a th:href="@{/institution}">Wyświetl liste</a></li>
-                    <li><a th:href="@{/admin/formInstitution}">Dodaj fundacje</a></li>
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/institution}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d4a2}" th:href="@{/admin/formInstitution}">Dodaj fundacje</a></li>
                 </ul>
             </li>
         </ul>

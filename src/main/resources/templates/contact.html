@@ -16,28 +16,28 @@
         <span th:include="fragments/header :: header"></span>
         <span sec:authorize="hasRole('ROLE_ADMIN')">
         <br/><br/><br/><br/>
-        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
         <span th:include="fragments/adminNavigation :: adminNavigation"></span>
         </span>
       </nav>
 
       <div class="slogan container container--90" style="display: block">
-          <h2>
+          <h2 th:text="#{app.contact.d1}">
             Dane Kontaktowe<br/><br/>
           </h2>
         <br/><br/>
         <div style="display: block;text-align: center">
         <h3 style="font-size: 16px">
-            <span class="hovery">al. Mińska 34</span><br/><br/>
-          <span class="hovery">Białystok 77-777</span><br/><br/>
-           <span class="hovery"> Numer telefonu: 666-777-666</span><br/><br/>
-           <span class="hovery"> E-mail: Niebioska@gmail.com</span>
+            <span th:text="#{app.contact.s1} + ' 34'" class="hovery">al. Mińska 34</span><br/><br/>
+          <span th:text="#{app.contact.s2} + ' 77-777' " class="hovery">Białystok 77-777</span><br/><br/>
+           <span th:text="#{app.contact.s3} + ' 666-777-666'" class="hovery"> Numer telefonu: 666-777-666</span><br/><br/>
+           <span th:text="#{app.contact.s4} + ' Niebioska@gmail.com'" class="hovery"> E-mail: Niebioska@gmail.com</span>
             <br/><br/>
         </h3>
         <br/><br/><br/><br/>
-        <h4 style="font-size: 13px">
+        <h4 th:text="#{app.contact.h4}" style="font-size: 13px">
           Lub skontaktuj sie znami za pomocą poniższego formularza!
-        <br/><br/>  <span style="font-weight: bold"><a class="hovery" style="cursor: pointer" th:href="@{/index}">Wróc do strony głównej</a></span>
+        <br/><br/>  <span style="font-weight: bold"><a th:text="#{app.contact.s5}" class="hovery" style="cursor: pointer" th:href="@{/index}">Wróc do strony głównej</a></span>
         </h4>
         </div>
       </div>
