@@ -23,26 +23,26 @@
     </header>
 
     <section class="login-page">
-      <h2>Załóż konto</h2>
+      <h2 th:text="#{app.register.confirmButton}">Załóż konto</h2>
       <form th:object="${users}" method="post" th:action="@{/register}">
         <div class="form-group">
-          <input type="text" th:field="*{username}" placeholder="Imię" id="username"/>
-          <span id='adminError' style="color:red">Pole Imię nie może być puste</span>
+          <input type="text" th:field="*{username}" th:placeholder="#{app.register.username.placeholder}" id="username"/>
+          <span th:text="#{app.register.username}" id='adminError' style="color:red">Pole Imię nie może być puste</span>
         </div>
         <div class="form-group">
-          <input type="text" th:field="*{lastName}" placeholder="Nazwisko" id="lastname" />
-          <span id='lastnameError' style="color:red">Pole Nazwisko nie może być puste</span>
+          <input type="text" th:field="*{lastName}" th:placeholder="#{app.register.lastname.placeholder}" id="lastname" />
+          <span th:text="#{app.register.lastname}" id='lastnameError' style="color:red">Pole Nazwisko nie może być puste</span>
         </div>
         <div class="form-group">
-          <input type="email" th:field="*{email}" placeholder="Email" id="email"/>
-          <span id='emailError' style="color:red">Pole Email nie może być puste</span>
+          <input type="email" th:field="*{email}" th:placeholder="#{app.register.email.placeholder}" id="email"/>
+          <span th:text="#{app.register.email}" id='emailError' style="color:red">Pole Email nie może być puste</span>
         </div>
         <div class="form-group">
-          <input type="password" th:field="*{password}" id="password" name="password" placeholder="Hasło" />
+          <input type="password" th:field="*{password}" id="password" name="password" th:placeholder="#{app.register.password.placeholder}"  />
         </div>
         <div class="form-group">
-          <input type="password" name="password2" id="password2" placeholder="Powtórz hasło" />
-          <span id='message' style="color:red">Hasło powinno zawierac minimum 8 znaków oraz składać się z przynajmniej jednej litery, cyfry oraz znaku specjalnego</span>
+          <input type="password" name="password2" id="password2" th:placeholder="#{app.register.password2.placeholder}" />
+          <span th:text="#{app.register.password}" id='message' style="color:red">Hasło powinno zawierac minimum 8 znaków oraz składać się z przynajmniej jednej litery, cyfry oraz znaku specjalnego</span>
           <input type="hidden" th:value="${localDateTime}" id="created" name="created"/>
           <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
           <input type="hidden" th:value="true" id="active" name="active"/>
@@ -51,7 +51,7 @@
         </div>
 
         <div style="min-width: 31%;" class="form-group form-group--buttons">
-          <button style="min-width: 31%;" type="submit" onclick="return checkPasswordAndName()" class="btn">Załóż konto</button>
+          <button th:text="#{app.register.confirmButton}" style="min-width: 31%;" type="submit" onclick="return checkPasswordAndName()" class="btn">Załóż konto</button>
         </div>
       </form>
     </section>

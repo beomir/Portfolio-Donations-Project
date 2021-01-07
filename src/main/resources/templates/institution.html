@@ -24,22 +24,22 @@
     </header>
 
     <section class="login-page">
-      <h2 sec:authorize="!isAnonymous()" th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz informację dotyczące Fundacji z którymi współpracujemy'"> </h2>
-      <h2 sec:authorize="isAnonymous()" th:text="'Hej, poniżej znajdziesz informację dotyczące Fundacji z którymi współpracujemy'"> </h2>
+      <h2  sec:authorize="!isAnonymous()" th:text="#{app.category.h2aa}  + ${username} + ', ' + #{app.institution.h2}"> </h2>
+      <h2 sec:authorize="isAnonymous()" th:text="#{app.category.h2aa} + #{app.institution.h2}"> </h2>
     </section>
 
     <div style="text-align: center;background-color: #00BCD4;border-radius: 3px">
-      <div style="color: black;text-align: center;font-size: 20px;font-weight: bold;" th:text="'Lista fundacji'"></div><br/><br/>
+      <div th:text="#{app.institution.d1}" style="color: black;text-align: center;font-size: 20px;font-weight: bold;"></div><br/><br/>
       <table  style="color: black;text-align: left;width:100%;border: solid 1px;">
         <tr style="border: solid 1px">
-          <th class="tables">Nazwa Fundacji</th>
-          <th class="tables">Opis</th>
-          <th  sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Stworzona</th>
-          <th  sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Ostatnia aktualizacja</th>
-          <th  sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Aktualizacja przez</th>
-          <th sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Status</th>
-          <th sec:authorize="hasRole('ROLE_ADMIN')" class="tables" id="changeStatus">Zmien Status</th>
-          <th sec:authorize="hasRole('ROLE_ADMIN')" class="tables" id="delete">Usuń</th>
+          <th th:text="#{app.institution.th1}" class="tables">Nazwa Fundacji</th>
+          <th th:text="#{app.institution.th2}" class="tables">Opis</th>
+          <th th:text="#{app.institution.th1}" sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Stworzona</th>
+          <th th:text="#{app.institution.th3}" sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Ostatnia aktualizacja</th>
+          <th th:text="#{app.institution.th4}" sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Aktualizacja przez</th>
+          <th th:text="#{app.institution.th5}" sec:authorize="hasRole('ROLE_ADMIN')" class="tables">Status</th>
+          <th th:text="#{app.institution.th6}" sec:authorize="hasRole('ROLE_ADMIN')" class="tables" id="changeStatus">Zmien Status</th>
+          <th th:text="#{app.institution.th7}" sec:authorize="hasRole('ROLE_ADMIN')" class="tables" id="delete">Usuń</th>
         </tr>
         <tr style="border: solid 1px" th:each="institutionList: ${institutions}">
           <td  sec:authorize="hasRole('ROLE_ADMIN')" style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły i móc edytować" class="tables" >
@@ -53,21 +53,21 @@
           <td  sec:authorize="hasRole('ROLE_ADMIN')" class="tables" th:text="*{#strings.replace(#strings.substring(institutionList.last_update,0,19),'T',' ')}"></td>
           <td  sec:authorize="hasRole('ROLE_ADMIN')" class="tables" th:text="${institutionList.changeBy}"></td>
           <td sec:authorize="hasRole('ROLE_ADMIN')" th:switch="${institutionList.active}"  class="tables">
-            <span th:case="true" th:text="'Aktywna'"></span>
-            <span th:case="false" th:text="'Nie aktywna'"></span>
+            <span th:case="true" th:text="#{app.category.activate}"></span>
+            <span th:case="false" th:text="#{app.category.deactivate"></span>
             <span th:case="*" th:text="Nieznany"></span>
           </td>
           <td sec:authorize="hasRole('ROLE_ADMIN')" th:switch="${institutionList.active}"  class="tables">
-            <a th:href="@{/admin/institution/deactivate/{id}(id=${institutionList.id})}"><span th:case="true" th:text="'Nie aktywna'" style="color: red;cursor: pointer;font-weight: bold"></span></a>
-            <a th:href="@{/admin/institution/activate/{id}(id=${institutionList.id})}"><span th:case="false" th:text="'Aktywna'" style="color: lightgreen;cursor: pointer;font-weight: bold"></span></a>
+            <a th:href="@{/admin/institution/deactivate/{id}(id=${institutionList.id})}"><span th:case="true" th:text="#{app.category.ondeactivated}" style="color: red;cursor: pointer;font-weight: bold"></span></a>
+            <a th:href="@{/admin/institution/activate/{id}(id=${institutionList.id})}"><span th:case="false" th:text="#{app.category.onactivate}" style="color: lightgreen;cursor: pointer;font-weight: bold"></span></a>
           </td>
           <td  sec:authorize="hasRole('ROLE_ADMIN')" title="Are you sure?" class="tables" style="color: #3c3c3c;cursor: pointer;font-weight: bold">
-            <a th:href="@{/admin/institution/delete/{id}(id=${institutionList.id})}"><span th:text="'Usuń'"></span></a>
+            <a th:href="@{/admin/institution/delete/{id}(id=${institutionList.id})}"><span th:text="#{app.institution.th7}"></span></a>
           </td>
         </tr>
       </table>
       <br/>
-      <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/formInstitution}"><button style="cursor:pointer;font-size: 20px;font-weight: bold;margin-left: 87%">Dodaj Fundacje</button></a>
+      <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/formInstitution}"><button th:text="#{app.admin.d4a2}" style="cursor:pointer;font-size: 20px;font-weight: bold;margin-left: 87%">Dodaj Fundacje</button></a>
     </div><br/><br/>
 
     <footer>
