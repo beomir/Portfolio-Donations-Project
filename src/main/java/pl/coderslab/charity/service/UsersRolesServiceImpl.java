@@ -61,4 +61,9 @@ public class UsersRolesServiceImpl implements UsersRolesService{
     public List<Long> getUsersRolesId() {
         return usersRolesRepository.getUsersRolesId();
     }
+
+    @Override
+    public String getUsersRolesByEmail(String email) {
+        return usersRolesRepository.getUsersRolesByEmail(email);
+    }
 }

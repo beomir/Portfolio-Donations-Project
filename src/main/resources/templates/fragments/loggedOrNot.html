@@ -17,7 +17,7 @@
             <div th:text="#{app.welcome} + ' ' +${username}"></div>
             <ul class="dropdown">
                 <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:text="#{app.logged.a3}" th:href="@{/admin}">Panel admina</a></li>
-                <li><a th:text="#{app.logged.a4}" th:href="@{/myProfile/{id}(id=${userId})}">Zarzadzaj kontem</a></li>
+                <li><a th:text="#{app.logged.a4}" th:href="@{/myProfile/{token}(token=${token})}">Zarzadzaj kontem</a></li>
                 <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:text="#{app.logged.a5}" th:href="@{/logged/donationList}">Moje zbiórki</a></li>
                 <li><a th:text="#{app.logged.a6}" th:href="@{/logout}">Wyloguj</a></li>
             </ul>

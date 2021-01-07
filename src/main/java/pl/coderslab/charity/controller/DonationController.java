@@ -11,10 +11,7 @@ import pl.coderslab.charity.app.SecurityUtils;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
-import pl.coderslab.charity.service.CategoryService;
-import pl.coderslab.charity.service.DonationService;
-import pl.coderslab.charity.service.InstitutionService;
-import pl.coderslab.charity.service.UsersService;
+import pl.coderslab.charity.service.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,13 +24,15 @@ public class DonationController {
     private final CategoryService categoryService;
     private final InstitutionService institutionService;
     private final UsersService usersService;
+    private final UsersRolesService usersRolesService;
 
     @Autowired
-    public DonationController(DonationService donationService, CategoryService categoryService, InstitutionService institutionService, UsersService usersService) {
+    public DonationController(DonationService donationService, CategoryService categoryService, InstitutionService institutionService, UsersService usersService, UsersRolesService usersRolesService) {
         this.donationService = donationService;
         this.categoryService = categoryService;
         this.institutionService = institutionService;
         this.usersService = usersService;
+        this.usersRolesService = usersRolesService;
     }
 
     @GetMapping("form")
@@ -75,11 +74,7 @@ public class DonationController {
     @GetMapping("/myFundraising/{specNumber}")
     public String userFundraising(@PathVariable String specNumber, Model model) {
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         Donation donation = donationService.getDonationBySpecNumber(specNumber);
         model.addAttribute("donations", donation);
@@ -90,7 +85,6 @@ public class DonationController {
         List<Category> categories = categoryService.getCategory();
         model.addAttribute("categories", categories);
 
-        model.addAttribute("localDateTime", LocalDateTime.now());
         return "myFundraising";
     }
 
@@ -102,31 +96,39 @@ public class DonationController {
 
     @GetMapping("/donationList")
     public String userFundraisingList(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<Donation> donationList = donationService.getDonationByUserEmail(SecurityUtils.username());
         model.addAttribute("donationList", donationList);
 
-        model.addAttribute("localDateTime", LocalDateTime.now());
         return "donationList";
     }
 
 
 //deactivate Donation - make them receipt
-    @GetMapping("myFundraising/deactivate/{id}")
+    @GetMapping("myFundraising/deactivate/{specNumber}")
     public String deactivateDonation(@PathVariable String specNumber) {
         donationService.deactivate(specNumber);
-        return "redirect:/logged/donationList";
+        if(usersRolesService.getUsersRolesByEmail(SecurityUtils.username()).equals("ROLE_ADMIN"))
+        {
+            return "redirect:/admin/donationListAll";
+        }
+        else {
+            return "redirect:/logged/donationList";
+        }
     }
 
     //activate Donation - make them  to receipt
-    @GetMapping("/myFundraising/activate/{id}")
+    @GetMapping("/myFundraising/activate/{specNumber}")
     public String activateDonation(@PathVariable String specNumber) {
         donationService.activate(specNumber);
-        return "redirect:/logged/donationList";
+        if(usersRolesService.getUsersRolesByEmail(SecurityUtils.username()).equals("ROLE_ADMIN"))
+        {
+            return "redirect:/admin/donationListAll";
+        }
+        else {
+            return "redirect:/logged/donationList";
+        }
     }
+
 }

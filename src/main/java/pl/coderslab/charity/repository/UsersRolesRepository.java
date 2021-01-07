@@ -18,4 +18,7 @@ public interface UsersRolesRepository extends JpaRepository<UsersRoles, Long> {
 
     @Query("Select u from UsersRoles u where u.active = false")
     List<UsersRoles> getDeactivatedUsersRoles();
+
+    @Query(value="select ur.role from users u inner join users_roles ur on u.users_roles_id = ur.id where email = ?1",nativeQuery = true)
+    String getUsersRolesByEmail(String email);
 }

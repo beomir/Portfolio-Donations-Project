@@ -9,7 +9,7 @@
     <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
 
   </head>
-  <body>
+  <body onload="migmig()">
     <header>
       <nav class="container container--70">
         <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
@@ -78,9 +78,19 @@
             <td style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły" class="tables" >
               <a th:href="@{/logged/myFundraising/{specNumber}(specNumber=${donationList.specNumber})}"><div th:text="${donationList.id}"></div></a>
             </td>
-            <td class="tables" th:text="${donationList.quantity}"></td>
+            <td class="tables" >
+              <div th:if="${donationList.expired == true && donationList.active == true}" th:text="${donationList.quantity}" style="color: red;background-color: antiquewhite;font-weight: bold;min-width: 100%" th:title="'Data odbioru: ' + ${donationList.pickUpDate} + ' ' + ${donationList.pickUpTime} + ' jest przedawniona'" class="expiredPickUpDate"></div>
+              <span th:if="${donationList.expired == false && donationList.active == true}" th:text="${donationList.quantity}"></span>
+              <span th:if="${donationList.expired == false && donationList.active == false}" th:text="${donationList.quantity}"></span>
+              <span th:if="${donationList.expired == true && donationList.active == false}" th:text="${donationList.quantity}"></span>
+            </td>
 
-            <td class="tables" th:text="${donationList.institution.name}"></td>
+            <td class="tables">
+              <div th:if="${donationList.expired == true && donationList.active == true}" th:text="${donationList.institution.name}" style="color: red;background-color: antiquewhite;font-weight: bold;min-width: 100%" th:title="'Data odbioru: ' + ${donationList.pickUpDate} + ' ' + ${donationList.pickUpTime} + ' jest przedawniona'" class="expiredPickUpDate"></div>
+              <span th:if="${donationList.expired == false && donationList.active == true}" th:text="${donationList.institution.name}"></span>
+              <span th:if="${donationList.expired == false && donationList.active == false}" th:text="${donationList.institution.name}"></span>
+              <span th:if="${donationList.expired == true && donationList.active == false}" th:text="${donationList.institution.name}"></span>
+            </td>
           </tr>
         </table>
       </div>
@@ -172,6 +182,18 @@
 
       function returnToPreviousPage() {
         window.history.forward(-1)
+      }
+
+      function migmig() {
+        setTimeout(function (){
+          migmig().fadeIn(5000)},5000)
+
+        setTimeout(function changeStatus() {
+          $("#changeStatus").fadeOut(3000);
+          $(".expiredPickUpDate").fadeOut(3000);
+        }, 3000)
+        $("#changeStatus").fadeIn(3000)
+        $(".expiredPickUpDate").fadeIn(3000)
       }
     </script>
   </body>

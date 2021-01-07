@@ -28,7 +28,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
 
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
         String userToken = usersService.FindUsernameByToken(SecurityUtils.username());
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 

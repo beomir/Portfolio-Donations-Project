@@ -42,11 +42,7 @@ public class HomeController {
         model.addAttribute("institutionsEven", institutionsEven);
         model.addAttribute("institutionsOdd", institutionsOdd);
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
         return "index";
     }
 

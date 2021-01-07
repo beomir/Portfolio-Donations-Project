@@ -226,7 +226,6 @@ public class UsersController {
         List<Donation> donationListAll = donationService.getDonation();
         model.addAttribute("donationList", donationListAll);
 
-        model.addAttribute("localDateTime", LocalDateTime.now());
         return "donationListAll";
     }
 

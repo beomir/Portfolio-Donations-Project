@@ -3,9 +3,7 @@ package pl.coderslab.charity.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.app.SecurityUtils;
-import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.repository.CategoryRepository;
 import pl.coderslab.charity.repository.DonationRepository;
 
 import java.time.LocalDateTime;

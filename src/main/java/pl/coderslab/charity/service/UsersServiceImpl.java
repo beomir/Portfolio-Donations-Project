@@ -114,8 +114,8 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
         String username = FindUsernameByEmail(SecurityUtils.username());
         model.addAttribute("username", username);
 
-        Long userId = FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        String token = FindUsernameByToken(SecurityUtils.username());
+        model.addAttribute("token", token);
         model.addAttribute("localDateTime", LocalDateTime.now());
     }
 

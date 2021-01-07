@@ -50,7 +50,12 @@
           <td class="tables"><span th:each="a,i : *{donationList.categories}"  th:text="${!i.last} ? ${a.name} + ',' : ${a.name}"></span></td>
           <td class="tables" th:text="${donationList.institution.name}"></td>
           <td class="tables" th:text="*{#strings.replace(#strings.substring(donationList.created,0,19),'T',' ')}"></td>
-          <td class="tables" th:text="${donationList.pickUpDate}"></td>
+          <td class="tables">
+            <div th:if="${donationList.expired == true && donationList.active == true}" th:text="${donationList.pickUpDate}" style="color: red;background-color: antiquewhite;font-weight: bold;min-width: 100%" th:title="'Data odbioru: ' + ${donationList.pickUpDate} + ' ' + ${donationList.pickUpTime} + ' jest przedawniona'" class="expiredPickUpDate"></div>
+            <span th:if="${donationList.expired == false && donationList.active == true}" th:text="${donationList.pickUpDate}"></span>
+            <span th:if="${donationList.expired == false && donationList.active == false}" th:text="${donationList.pickUpDate}"></span>
+            <span th:if="${donationList.expired == true && donationList.active == false}" th:text="${donationList.pickUpDate}"></span>
+          </td>
           <td th:switch="${donationList.active}"  class="tables">
             <span th:case="true" th:text="Nieodebrane"></span>
             <span th:case="false" th:text="Odebrane"></span>
@@ -76,8 +81,10 @@
 
         setTimeout(function changeStatus() {
           $("#changeStatus").fadeOut(3000);
+          $(".expiredPickUpDate").fadeOut(3000);
         }, 3000)
         $("#changeStatus").fadeIn(3000)
+        $(".expiredPickUpDate").fadeIn(3000)
         }
   </script>
   </body>

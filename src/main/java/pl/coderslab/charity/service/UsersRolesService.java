@@ -20,4 +20,6 @@ public interface UsersRolesService {
 
     List<Long> getUsersRolesId();
 
+    String getUsersRolesByEmail(String email);
+
 }
