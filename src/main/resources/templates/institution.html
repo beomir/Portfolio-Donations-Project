@@ -17,7 +17,7 @@
         <span th:include="fragments/header :: header"></span>
         <span sec:authorize="hasRole('ROLE_ADMIN')">
         <br/><br/><br/><br/>
-        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
         <span th:include="fragments/adminNavigation :: adminNavigation"></span>
         </span>
       </nav>

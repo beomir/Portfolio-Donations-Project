@@ -7,6 +7,7 @@
     <title>Document</title>
     <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
     <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" th:src= "@{/js/jquery.scrollTo.min.js}"></script>
   </head>
   <body>
     <header class="header--form-page">
@@ -16,7 +17,7 @@
         <span th:include="fragments/header :: header"></span>
         <span sec:authorize="hasRole('ROLE_ADMIN')">
         <br/><br/><br/><br/>
-        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
         <span th:include="fragments/adminNavigation :: adminNavigation"></span>
         </span>
       </nav>
@@ -32,16 +33,16 @@
             <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
             <ul class="slogan--steps-boxes">
               <li>
-                <div><em>1</em><span>Wybierz rzeczy</span></div>
+                <div><em>1</em><span><a id="firstStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Wybierz rzeczy</a></span></div>
               </li>
               <li>
-                <div><em>2</em><span>Spakuj je w worki</span></div>
+                <div><em>2</em><span><a id="secondStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Spakuj je w worki</a></span></div>
               </li>
               <li>
-                <div><em>3</em><span>Wybierz fundację</span></div>
+                <div><em>3</em><span><a id="thirdStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Wybierz fundację</a></span></div>
               </li>
               <li>
-                <div><em>4</em><span>Zamów kuriera</span></div>
+                <div><em>4</em><span><a id="fourthStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Zamów kuriera</a></span></div>
               </li>
             </ul>
           </div>
@@ -69,7 +70,7 @@
         </div>
       </div>
 
-      <div class="form--steps-container">
+      <div class="form--steps-container" id="chosenThings">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
         <form  th:action="@{/logged/form}" method="post">
           <!-- STEP 1: class .active is switching steps -->
@@ -90,7 +91,7 @@
           </div>
 
           <!-- STEP 2 -->
-          <div data-step="2">
+          <div data-step="2" id="packBag">
             <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
             <div class="form-group form-group--inline">
@@ -109,7 +110,7 @@
 
 
           <!-- STEP 3 -->
-          <div data-step="3">
+          <div data-step="3" id="choseInstitution">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
             <div  th:each="i : ${institutions}" class="form-group form-group--checkbox">
@@ -130,7 +131,7 @@
           </div>
 
           <!-- STEP 5 -->
-          <div data-step="4">
+          <div data-step="4" id="orderTheCourier">
             <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
 
             <div class="form-section form-section--columns">
@@ -343,7 +344,6 @@
         window.history.forward(-1);
       }
     }
-
 
   </script>
   </body>

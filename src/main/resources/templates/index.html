@@ -6,8 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title th:text="#{app.title}">Document</title>
     <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-
+    <script type="text/javascript" th:src= "@{/js/jquery.scrollTo.min.js}"></script>
     <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+    <script>
+        jQuery(function($){
+
+            $('#link0').click(function() {$.scrollTo($('#whatsGoingOn'),500);})
+            $('#link1').click(function() {$.scrollTo($('#aboutUs'),500);})
+        });
+    </script>
 </head>
 <body>
 <header class="header--main-page">
@@ -17,12 +24,12 @@
         <span th:include="fragments/header :: header"></span>
         <span sec:authorize="hasRole('ROLE_ADMIN')">
         <br/><br/><br/><br/>
-        <div  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
         <span th:include="fragments/adminNavigation :: adminNavigation"></span>
         </span>
     </nav>
 
-    <div class="slogan container container--90">
+    <div class="slogan container container--90" >
         <div class="slogan--item">
             <h1 style="white-space: pre-wrap" th:text="#{app.index.h1}">
 <!--                Zacznij pomagać!<br/>-->
@@ -32,7 +39,7 @@
     </div>
 </header>
 
-<section class="stats">
+<section class="stats" id="whatsGoingOn">
     <div class="container container--85">
         <div class="stats--item">
             <em th:text="${sumOfDonation}" ></em>
@@ -81,7 +88,7 @@
     <a style="white-space: pre-wrap" th:text="#{app.index.a1}" th:href="@{/register}" class="btn btn--large">Załóż konto</a>
 </section>
 
-<section class="about-us">
+<section class="about-us" id="aboutUs">
     <div class="about-us--text">
         <h2 style="white-space: pre-wrap" th:text="#{app.index.h2b}">O nas</h2>
         <p style="white-space: pre-wrap" th:text="#{app.index.h2p2}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero
