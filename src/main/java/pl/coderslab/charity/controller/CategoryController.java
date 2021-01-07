@@ -32,12 +32,7 @@ public class CategoryController {
     public String CategoryForm(Model model){
         model.addAttribute("category", new Category());
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         model.addAttribute("localDateTime", LocalDateTime.now());
         return "formCategory";
@@ -53,11 +48,7 @@ public class CategoryController {
     @GetMapping("/admin/editCategory/{id}")
     public String institutionEdit(@PathVariable Long id, Model model) {
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         Category category = categoryService.category(id);
         model.addAttribute("category", category);
@@ -78,11 +69,7 @@ public class CategoryController {
 
     @GetMapping("/admin/categoryList")
     public String categoryList(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<Category> categories = categoryService.getCategory();
         model.addAttribute("categories", categories);

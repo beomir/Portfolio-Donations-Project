@@ -14,12 +14,14 @@ public interface DonationService {
 
     Donation getDonationById(Long id);
 
+    Donation getDonationBySpecNumber(String specNumber);
+
     int SumOfDonation();
 
     int QtyOfDonation();
 
-    void deactivate(Long id);
+    void deactivate(String specNumber);
 
-    void activate(Long id);
+    void activate(String specNumber);
 
 }

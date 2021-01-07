@@ -43,7 +43,7 @@
         </tr>
         <tr style="border: solid 1px" th:each="donationList: ${donationList}">
           <td style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły i móc edytować" class="tables" >
-            <a th:href="@{/logged/myFundraising/{id}(id=${donationList.id})}"><div th:text="${donationList.id}"></div></a>
+            <a th:href="@{/logged/myFundraising/{specNumber}(specNumber=${donationList.specNumber})}"><div th:text="${donationList.id}"></div></a>
           </td>
           <td class="tables" th:text="${donationList.users.email}"></td>
           <td class="tables" th:text="${donationList.quantity}"></td>
@@ -57,8 +57,8 @@
             <span th:case="*" th:text="Nieznany"></span>
           </td>
           <td th:switch="${donationList.active}"  class="tables">
-            <a th:href="@{/logged/myFundraising/deactivate/{id}(id=${donationList.id})}"><span th:case="false" th:text="'na nieodebrane'" style="color: red;cursor: pointer;font-weight: bold"></span></a>
-            <a th:href="@{/logged/myFundraising/activate/{id}(id=${donationList.id})}"><span th:case="true" th:text="'na odebrane'" style="color: lightgreen;cursor: pointer;font-weight: bold"></span></a>
+            <a th:href="@{/logged/myFundraising/deactivate/{specNumber}(specNumber=${donationList.specNumber})}"><span th:case="false" th:text="'na nieodebrane'" style="color: red;cursor: pointer;font-weight: bold"></span></a>
+            <a th:href="@{/logged/myFundraising/activate/{specNumber}(specNumber=${donationList.specNumber})}"><span th:case="true" th:text="'na odebrane'" style="color: lightgreen;cursor: pointer;font-weight: bold"></span></a>
           </td>
         </tr>
       </table>

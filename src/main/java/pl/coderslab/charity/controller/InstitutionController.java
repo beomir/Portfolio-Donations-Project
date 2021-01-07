@@ -40,12 +40,7 @@ public class InstitutionController {
         List<Institution> institution = institutionService.getInstitution();
         model.addAttribute("institutions", institution);
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         model.addAttribute("localDateTime", LocalDateTime.now());
         return "formInstitution";
@@ -61,11 +56,7 @@ public class InstitutionController {
     @GetMapping("/admin/editInstitution/{id}")
     public String institutionEdit(@PathVariable Long id, Model model) {
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         Institution institution = institutionService.getInstitutionById(id);
         model.addAttribute("institution", institution);
@@ -86,11 +77,7 @@ public class InstitutionController {
 
     @GetMapping("/institution")
     public String institutionList(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<Institution> institutions = institutionService.getInstitution();
         model.addAttribute("institutions", institutions);

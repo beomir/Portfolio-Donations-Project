@@ -190,6 +190,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const quantity = document.getElementById("quantity");
 
+    if(document.querySelector('input[class="checkboxRadio"]:checked ~ span.description div.title') == null){
+      alert("Nie została wybrana żadna fundacja")
+    }
     const institution = document.querySelector('input[class="checkboxRadio"]:checked ~ span.description div.title').innerHTML;
     var inputElements = document.querySelectorAll('input[name="categories"]:checked ~ span.description');
     const street = document.getElementById("street");

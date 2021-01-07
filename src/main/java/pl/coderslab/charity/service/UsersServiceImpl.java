@@ -4,6 +4,7 @@ package pl.coderslab.charity.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import pl.coderslab.charity.app.SecurityUtils;
 import pl.coderslab.charity.app.TimeUtils;
 import pl.coderslab.charity.entity.Users;
@@ -19,6 +20,7 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     private final PasswordEncoder passwordEncoder;
     private boolean registrationValidation;
     private boolean resetPassword;
+    private boolean changeDataValidation;
 
 
 
@@ -74,6 +76,26 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     }
 
     @Override
+    public void checkData(Users users, String password2){
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[%&@#$^*?_~])(?=\\S+$).{8,}"; // for Test ! is not added
+        if(users.getPassword().matches(pattern) && users.getPassword().contains(password2))
+        {
+            changeDataValidation = true;
+            changedDataStatus();
+        }
+        else {
+            changeDataValidation = false;
+            changedDataStatus();
+        }
+
+    }
+
+    @Override
+    public boolean changedDataStatus() {
+        return changeDataValidation;
+    }
+
+    @Override
     public boolean registrationStatus() {
         return registrationValidation;
     }
@@ -85,6 +107,16 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     @Override
     public Users getByEmail(String email) {
         return usersRepository.getByEmail(email);
+    }
+
+    @Override
+    public void loggedUserData(Model model) {
+        String username = FindUsernameByEmail(SecurityUtils.username());
+        model.addAttribute("username", username);
+
+        Long userId = FindUserIdByEmail(SecurityUtils.username());
+        model.addAttribute("userId", userId);
+        model.addAttribute("localDateTime", LocalDateTime.now());
     }
 
 
@@ -131,6 +163,11 @@ public class UsersServiceImpl implements pl.coderslab.charity.service.UsersServi
     @Override
     public Long FindUserIdByEmail(String email) {
         return usersRepository.FindUserIdByEmail(email);
+    }
+
+    @Override
+    public String FindUsernameByToken(String email) {
+        return usersRepository.FindUsernameByToken(email);
     }
 
     @Override

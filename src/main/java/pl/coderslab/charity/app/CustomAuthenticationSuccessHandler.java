@@ -29,12 +29,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
 
         Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
+        String userToken = usersService.FindUsernameByToken(SecurityUtils.username());
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         if (roles.contains("ROLE_ADMIN")) {
             httpServletResponse.sendRedirect("/admin");
         } else {
-            httpServletResponse.sendRedirect("/myProfile/" + userId);
+            httpServletResponse.sendRedirect("/myProfile/" + userToken);
         }
     }
 }

@@ -27,4 +27,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     @Query("Select distinct d from Donation d where d.id = ?1 order by d.active desc,d.pickUpDate,d.pickUpTime,d.created")
     Donation getDonationById(Long id);
 
+    @Query("Select distinct d from Donation d where d.specNumber = ?1 order by d.active desc,d.pickUpDate,d.pickUpTime,d.created")
+    Donation getDonationBySpecNumber(String specNumber);
+
 }

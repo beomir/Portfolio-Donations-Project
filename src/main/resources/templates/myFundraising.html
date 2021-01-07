@@ -24,7 +24,7 @@
     </header>
 
     <section class="login-page">
-      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz szczegóły dotyczące zbiórki numer: ' + ${id}"> </h2>
+      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz szczegóły dotyczące zbiórki numer: ' + ${donations.id}"> </h2>
     </section>
     <form style="text-align: center" th:object="${donations}" method="post" th:action="@{/logged/myFundraising}">
 
@@ -32,9 +32,9 @@
         <label style="color: black;font-weight: bold">Ilość</label><br/>
         <input type="number" th:field="*{quantity}"  />
       </div>
-      <div class="form-group">
+      <div style="text-align: center" class="form-group">
         <label style="color: black;font-weight: bold">Fundacja</label><br/>
-        <select class="select-css" th:field="*{institution}">
+        <select style="text-align: center;margin-left: auto;margin-right: auto;" class="select-css" th:field="*{institution}">
           <option th:each="i : ${institutions}" th:value="${i.id}" th:text="${i.name}">
           </option>
         </select>
@@ -56,9 +56,9 @@
         <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
       </div>
 
-      <div class="form-group">
+      <div style="text-align: center" class="form-group">
         <label style="color: black;font-weight: bold">Odebrana?</label><br/>
-        <select class="select-css" th:field="*{active}">
+        <select style="text-align: center;margin-left: auto;margin-right: auto" class="select-css" th:field="*{active}">
           <option th:value="true">Nie</option>
           <option th:value="false">Tak</option>
         </select>
@@ -69,22 +69,19 @@
         <input type="text" th:field="*{city}"  />
       </div>
 
-      <div style="text-align: center" class="form-group">
-        <label style="color: black;font-weight: bold">Kategorie</label><br/>
-          <label>Wybrane:</label>
-          <div th:each="i : *{categories}"  th:text="${i.name}"></div><br/>
-          <div style="font-size: 16px;font-width: bold;">Zmień:</div>
-        <label>ubrania, które nadają się do ponownego użycia</label>
-        <input class="categoryCheckbox" type="checkbox" th:value="1" id="categories" name="categories"/><br/>
-        <label>ubrania, do wyrzucenia</label>
-        <input class="categoryCheckbox" type="checkbox" th:value="2" id="categories" name="categories"/><br/>
-        <label>książki</label>
-        <input class="categoryCheckbox" type="checkbox" th:value="3" id="categories" name="categories"/><br/>
-        <label>zabawki</label>
-        <input class="categoryCheckbox" type="checkbox" th:value="4" id="categories" name="categories"/><br/>
-        <label>inne</label>
-        <input class="categoryCheckbox" type="checkbox" th:value="5" id="categories" name="categories"/><br/>
+<div style="text-align: center" class="form-group">
+      <label style="color: black;font-weight: bold">Kategorie</label><br/>
+      <label>Wybrane:</label>
+      <div th:each="i : *{categories}"  th:text="${i.name}"></div><br/>
+      <div style="font-size: 16px;font-weight: bold;">Zmień:</div>
+      <div style="text-align: center" th:each="category: ${categories}" class="form-group">
+        <label>
+          <input class="categoryCheckbox" type="checkbox" name="categories" th:value="${category.id}"/>
+          <span class="checkbox"></span>
+          <span th:text="${category.name}" class="description"></span>
+        </label>
       </div>
+</div>
 
       <div class="form-group">
         <label style="color: black;font-weight: bold">Ulica</label><br/>
@@ -108,7 +105,7 @@
 
       <div class="form-group">
         <label style="color: black;font-weight: bold">Data odbioru</label><br/>
-        <input type="date" th:field="*{pickUpDate}"  />
+        <input type="date" th:field="*{pickUpDate}"  id="date" min="1899-01-01" />
       </div>
 
       <div class="form-group">
@@ -116,6 +113,7 @@
         <input type="text" th:field="*{pickUpComment}"  />
         <input type="hidden" th:field="*{id}"/>
         <input type="hidden" th:field="*{users}"/>
+        <input type="hidden" th:field="*{expired}"/>
       </div>
 
 
@@ -129,7 +127,18 @@
       <span th:include="fragments/footer :: footer"></span>
       </footer>
     <script type="text/javascript">
-
+        var today = new Date();
+        var dd = today.getDate()+1;
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("date").setAttribute("min", today);
 
     function checkbox() {
       var inputElements = document.getElementsByClassName('categoryCheckbox');

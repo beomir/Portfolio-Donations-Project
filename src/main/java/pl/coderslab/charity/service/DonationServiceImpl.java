@@ -24,6 +24,7 @@ public class DonationServiceImpl implements DonationService{
 
     @Override
     public void add(Donation donation) {
+        donation.setSpecNumber(SecurityUtils.uuidToken());
         donationRepository.save(donation);
     }
 
@@ -43,6 +44,11 @@ public class DonationServiceImpl implements DonationService{
     }
 
     @Override
+    public Donation getDonationBySpecNumber(String specNumber) {
+        return donationRepository.getDonationBySpecNumber(specNumber);
+    }
+
+    @Override
     public int SumOfDonation() {
         return donationRepository.SumOfDonation();
     }
@@ -53,8 +59,8 @@ public class DonationServiceImpl implements DonationService{
     }
 
     @Override
-    public void deactivate(Long id) {
-        Donation donation = donationRepository.getOne(id);
+    public void deactivate(String specNumber) {
+        Donation donation = donationRepository.getDonationBySpecNumber(specNumber);
         donation.setActive(true);
         donation.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         donation.setChangeBy(SecurityUtils.usernameForActivations());
@@ -62,8 +68,8 @@ public class DonationServiceImpl implements DonationService{
     }
 
     @Override
-    public void activate(Long id) {
-        Donation donation = donationRepository.getOne(id);
+    public void activate(String specNumber) {
+        Donation donation = donationRepository.getDonationBySpecNumber(specNumber);
         donation.setActive(false);
         donation.setLast_update(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         donation.setChangeBy(SecurityUtils.usernameForActivations());

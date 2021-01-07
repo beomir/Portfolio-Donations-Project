@@ -1,7 +1,6 @@
 package pl.coderslab.charity.service;
 
 import pl.coderslab.charity.entity.Category;
-import pl.coderslab.charity.entity.Institution;
 
 import java.util.List;
 

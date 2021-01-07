@@ -37,6 +37,7 @@ public class Donation {
     private String zipCode;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate pickUpDate;
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime pickUpTime;
     private String pickUpComment;
     private String phone;
@@ -49,8 +50,10 @@ public class Donation {
     private String last_update;
     private String changeBy;
     private boolean active;
+    private boolean expired;
+    private String specNumber;
 
-    public Donation(Long id, int quantity, Institution institution, String street, String city, String zipCode, LocalDate pickUpDate, LocalTime pickUpTime, String pickUpComment, String phone, Users users, String created, String last_update, String changeBy, boolean active) {
+    public Donation(Long id, int quantity, Institution institution, String street, String city, String zipCode, LocalDate pickUpDate, LocalTime pickUpTime, String pickUpComment, String phone, Users users, String created, String last_update, String changeBy, boolean active, boolean expired,String specNumber) {
         this.id = id;
         this.quantity = quantity;
         this.institution = institution;
@@ -66,6 +69,8 @@ public class Donation {
         this.last_update = last_update;
         this.changeBy = changeBy;
         this.active = active;
+        this.expired = expired;
+        this.specNumber = specNumber;
     }
 
     @Override
@@ -85,6 +90,8 @@ public class Donation {
                 ", last_update='" + last_update + '\'' +
                 ", changeBy='" + changeBy + '\'' +
                 ", active=" + active +
+                ", expired=" + expired +
+                ", specNumber=" + specNumber +
                 '}';
     }
 }

@@ -40,23 +40,22 @@ public class UsersController {
         this.sendEmailService = sendEmailService;
     }
 
+
+
     @GetMapping("/register")
     public String form(Model model) {
-        model.addAttribute("localDateTime", LocalDateTime.now());
         model.addAttribute("users", new Users());
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
         return "register";
     }
 
     @PostMapping("register")
     public String add(Users users,String email) {
         usersService.registry(users);
-        sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje klikając: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Tutaj</a></p>","Potwierdzenie rejestracji");
+        if(usersService.registrationStatus()){
+            sendEmailService.sendEmail(email,"<p>Witaj w serwisie CharityNieboska, Potwierdz rejestracje klikając: <a href='http://localhost:8080/loginCheck/" + users.getActivateToken() + "'>Tutaj</a></p>","Potwierdzenie rejestracji");
+        }
         return "redirect:/register-confirmation";
     }
 
@@ -78,11 +77,7 @@ public class UsersController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
         return "login";
     }
 
@@ -102,24 +97,16 @@ public class UsersController {
 
     @GetMapping("/admin")
     public String adminPanel(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
         return "admin";
     }
 
-    @GetMapping("/myProfile/{id}")
-    public String userPanel(@PathVariable Long id, Model model) {
-        Users user = usersService.findById(id);
+    @GetMapping("/myProfile/{token}")
+    public String userPanel(@PathVariable String token, Model model) {
+        Users user = usersService.getUserByActivateToken(token);
         model.addAttribute(user);
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<Donation> donationList = donationService.getDonationByUserEmail(SecurityUtils.username());
         model.addAttribute("donationList", donationList);
@@ -129,6 +116,28 @@ public class UsersController {
         return "myProfile";
     }
 
+    @PostMapping("myProfile")
+    public String usersDataChanges(Users users,String email, String password2) {
+        usersService.checkData(users,password2);
+        if(usersService.changedDataStatus())
+        {
+            sendEmailService.sendEmail(email,"<p>Twoje dane po dokonanych zmianach:<br/><b> Imię:</b>" + users.getUsername() + "<br/><br/> <b>Nazwisko:</b>" + users.getLastName() + "<br/><br/><b>Hasło:</b>" + users.getPassword() + "</p>","Zmiana danych");
+            usersService.add(users);
+            return "redirect:/data-changed";
+        }
+        else
+            return "redirect:/data-changed";
+
+    }
+
+    @RequestMapping("/data-changed")
+    public String dataChangeConfirmation(Model model){
+        model.addAttribute("changedDataStatus", usersService.changedDataStatus());
+        Users user = usersService.getByEmail(SecurityUtils.username());
+        model.addAttribute("users", user);
+        usersService.loggedUserData(model);
+        return "data-changed";
+    }
 
 
     //User Management
@@ -139,12 +148,7 @@ public class UsersController {
         List<UsersRoles> usersRoles = usersRolesService.getUsersRoles();
         model.addAttribute("usersRoles", usersRoles);
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         model.addAttribute("localDateTime", LocalDateTime.now());
         return "formUser";
@@ -160,11 +164,7 @@ public class UsersController {
     @GetMapping("/admin/editUser/{id}")
     public String usersEdit(@PathVariable Long id, Model model) {
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         Users user = usersService.getUsersById(id);
         model.addAttribute("user", user);
@@ -188,11 +188,7 @@ public class UsersController {
 
     @GetMapping("/admin/usersList")
     public String usersList(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<Users> users = usersService.getUsers();
         model.addAttribute("users", users);
@@ -225,11 +221,7 @@ public class UsersController {
     //donation Managment
     @GetMapping("/admin/donationListAll")
     public String userFundraisingListAll(Model model) {
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<Donation> donationListAll = donationService.getDonation();
         model.addAttribute("donationList", donationListAll);
@@ -242,8 +234,7 @@ public class UsersController {
     public String userFundraisingList(Model model) {
         model.addAttribute("donation", new Donation());
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
+        usersService.loggedUserData(model);
 
         List<Category> categories = categoryService.getActiveCategory();
         model.addAttribute("categories", categories);
@@ -251,8 +242,6 @@ public class UsersController {
         List<Institution> institutions = institutionService.getActiveInstitution();
         model.addAttribute("institutions", institutions);
 
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
 
         List<Users> users = usersService.getUsers();
         model.addAttribute("usersList", users);
@@ -274,11 +263,7 @@ public class UsersController {
     @GetMapping("/resetPassword")
     public String resetPassword(Model model) {
 
-        String username = usersService.FindUsernameByEmail(SecurityUtils.username());
-        model.addAttribute("username", username);
-
-        Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
-        model.addAttribute("userId", userId);
+        usersService.loggedUserData(model);
 
         List<UsersRoles> usersRoles = usersRolesService.getUsersRoles();
         model.addAttribute("usersRoles", usersRoles);

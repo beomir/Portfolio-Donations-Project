@@ -31,6 +31,7 @@ public class HomeController {
         this.sendEmailService = sendEmailService;
     }
 
+
     @RequestMapping("/index")
     public String homeAction(Model model){
         List<Institution> institutionsEven = institutionService.getInstitutionEven();
@@ -50,12 +51,14 @@ public class HomeController {
     }
 
     @RequestMapping("/contact")
-    public String contact(){
+    public String contact(Model model){
+        usersService.loggedUserData(model);
         return "contact";
     }
 
     @RequestMapping("/contactForm-confirmation")
-    public String contactFormConfirmation(){
+    public String contactFormConfirmation(Model model){
+        usersService.loggedUserData(model);
         return "contactForm-confirmation";
     }
 

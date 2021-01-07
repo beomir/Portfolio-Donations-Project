@@ -33,7 +33,7 @@
       <div style="float: left;max-width: 50%;min-width:40%" id="left-side">
 
         <div style="text-align: center">
-      <form th:object="${users}" method="post" th:action="@{/register}">
+      <form th:object="${users}" method="post" th:action="@{/myProfile}">
         <div class="form-group">
           <input type="text" th:field="*{username}" placeholder="Imię" id="username"/>
           <span id='adminError'></span>
@@ -47,8 +47,9 @@
         </div>
         <div class="form-group">
           <input type="password" name="password2" id="password2" placeholder="Powtórz hasło" />
-          <span id='message'></span>
+          <br/><span id='message' style="color:red">Hasło powinno zawierac minimum 8 znaków oraz składać się z przynajmniej jednej litery, cyfry oraz znaku specjalnego</span>
           <input type="hidden" th:field="*{created}"/>
+          <input type="hidden" th:field="*{id}"/>
           <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
           <input type="hidden" th:value="true" id="active" name="active"/>
           <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
@@ -75,7 +76,7 @@
           </tr>
           <tr style="border: solid 1px" th:each="donationList: ${donationList}">
             <td style="cursor: pointer" title="Naciśnij żeby sprawdzić szczegóły" class="tables" >
-              <a th:href="@{/logged/myFundraising/{id}(id=${donationList.id})}"><div th:text="${donationList.id}"></div></a>
+              <a th:href="@{/logged/myFundraising/{specNumber}(specNumber=${donationList.specNumber})}"><div th:text="${donationList.id}"></div></a>
             </td>
             <td class="tables" th:text="${donationList.quantity}"></td>
 
@@ -101,10 +102,28 @@
       })
 
       $('#password, #password2').on('keyup', function () {
-        if ($('#password').val() == $('#password2').val()) {
-          $('#message').html('Jest OK').css('color', 'green');
-        } else
-          $('#message').html('Jest różnica względem pierwszego hasła, popraw').css('color', 'red');
+        if($('#password').val() =='')
+        {
+          $('#message').html('Hasło powinno zawierac minimum 8 znaków oraz składać się z przynajmniej jednej litery, cyfry oraz znaku specjalnego').css('color', 'red')
+        }
+        else if ($('#password').val() != $('#password2').val()) {
+          $('#message').html('Jest różnica względem pierwszego hasła, popraw').css('color', 'red')
+        }
+        else if($('#password').val().length<8) {
+          $('#message').html('Hasło jest za krótkie').css('color', 'red');
+        }
+        else if (!$('#password').val().match(/([a-z])/) || !$('#password').val().match(/([0-9])/) ){
+          $('#message').html('Hasło nie posiada liter i liczb').css('color', 'red');
+        }
+        else if (!$('#password').val().match(/([A-Z])/)){
+          $('#message').html('Hasło nie posiada wielkiej litery').css('color', 'red');
+        }
+        else if (!$('#password').val().match(/([!,%,&,@,#,$,^,*,?,_,~])/)){
+          $('#message').html('Hasło nie zawiera znaku specjalnego').css('color', 'red');
+        }
+        else {
+          $('#message').html('Jest ok').css('color', 'green');
+        }
       });
 
 
@@ -116,6 +135,30 @@
         if(pass1 != pass2 )
         {
           alert("Hasła różnią się od siebie")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(pass1.length<8)
+        {
+          alert("Ilość znaków w haśle jest mniejsza niż wymagane 8")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(!pass1.match(/([a-z])/) || !pass1.match(/([0-9])/))
+        {
+          alert("Hasło nie posiada liter i liczb")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(!pass1.match(/([A-Z])/))
+        {
+          alert("Hasło nie posiada wielkiej litery")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(!pass1.match(/([!,%,&,@,#,$,^,*,?,_,~])/))
+        {
+          alert("Hasło nie zawiera znaku specjalnego")
           returnToPreviousPage();
           return false;
         }

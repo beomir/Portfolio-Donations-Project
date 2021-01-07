@@ -27,11 +27,11 @@ public class DonationFixture {
 
 
             private List<Donation> donationList = Arrays.asList(
-                    new Donation(null,33,new ArrayList<>(),null,"Kołchozna","Kharkiv","33-333", LocalDate.now(), LocalTime.now(),"Nothing to add","666-777-888",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
-                    new Donation(null,44,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
-                    new Donation(null,3,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true),
-                    new Donation(null,6,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",false),
-                    new Donation(null,9,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",false)
+                    new Donation(null,33,new ArrayList<>(),null,"Kołchozna","Kharkiv","33-333", LocalDate.now(), LocalTime.now(),"Nothing to add","666-777-888",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true,false,null),
+                    new Donation(null,44,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true,false,null),
+                    new Donation(null,3,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",true,false,null),
+                    new Donation(null,6,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",false,false,null),
+                    new Donation(null,9,new ArrayList<>(),null,"Sovieckaja","Kiev","73-333", LocalDate.now(), LocalTime.now(),"Nothing to add","696-797-898",null, TimeUtils.timeNowLong(),TimeUtils.timeNowLong(),"system",false,false,null)
             );
 
 

@@ -72,8 +72,8 @@ public class DonationController {
         return "form-confirmation";
     }
 
-    @GetMapping("/myFundraising/{id}")
-    public String userFundraising(@PathVariable Long id, Model model) {
+    @GetMapping("/myFundraising/{specNumber}")
+    public String userFundraising(@PathVariable String specNumber, Model model) {
 
         String username = usersService.FindUsernameByEmail(SecurityUtils.username());
         model.addAttribute("username", username);
@@ -81,11 +81,14 @@ public class DonationController {
         Long userId = usersService.FindUserIdByEmail(SecurityUtils.username());
         model.addAttribute("userId", userId);
 
-        Donation donation = donationService.getDonationById(id);
+        Donation donation = donationService.getDonationBySpecNumber(specNumber);
         model.addAttribute("donations", donation);
 
         List<Institution> institutions = institutionService.getActiveInstitution();
         model.addAttribute("institutions", institutions);
+
+        List<Category> categories = categoryService.getCategory();
+        model.addAttribute("categories", categories);
 
         model.addAttribute("localDateTime", LocalDateTime.now());
         return "myFundraising";
@@ -115,15 +118,15 @@ public class DonationController {
 
 //deactivate Donation - make them receipt
     @GetMapping("myFundraising/deactivate/{id}")
-    public String deactivateDonation(@PathVariable Long id) {
-        donationService.deactivate(id);
+    public String deactivateDonation(@PathVariable String specNumber) {
+        donationService.deactivate(specNumber);
         return "redirect:/logged/donationList";
     }
 
     //activate Donation - make them  to receipt
     @GetMapping("/myFundraising/activate/{id}")
-    public String activateDonation(@PathVariable Long id) {
-        donationService.activate(id);
+    public String activateDonation(@PathVariable String specNumber) {
+        donationService.activate(specNumber);
         return "redirect:/logged/donationList";
     }
 }
