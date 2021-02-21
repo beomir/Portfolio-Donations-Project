@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <header>
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+          <span sec:authorize="hasRole('ROLE_ADMIN')">
+        <br/><br/><br/><br/>
+        <div th:text="#{app.logged.a3}"  style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <span th:include="fragments/adminNavigation :: adminNavigation"></span>
+        </span>
+      </nav>
+    </header>
+
+    <section class="login-page">
+      <h2>Edytuj Fundacje</h2>
+      <form th:object="${institution}" method="post" th:action="@{/admin/editInstitution}">
+        <div class="form-group">
+          <input type="text" th:field="*{name}" placeholder="Nazwa Fundacji" id="fundationName"/>
+          <span id="nameError"></span>
+        </div>
+        <div class="form-group">
+          <input type="text" th:field="*{description}" placeholder="Cel i Opis Fundacji" />
+        </div>
+        <select class="select-css" th:field="*{active}" placeholder="Status">
+          <option th:value="true">Aktywna</option>
+          <option th:value="false">Nieaktywna</option>
+        </select>
+        <div class="form-group">
+          <input type="hidden" th:field="*{created}"/>
+          <input type="hidden" th:field="*{id}"/>
+          <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+          <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+        </div>
+
+        <div style="min-width: 31%;" class="form-group form-group--buttons">
+          <button style="min-width: 31%;" type="submit" onclick="return checkIfInstitutionExist()" class="btn">Zapisz zmiany</button>
+        </div>
+      </form>
+    </section>
+
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+    </footer>
+    <script type="text/javascript">
+    $('#name').on('keyup', function() {
+      if($('#name').val().contains($(".allInst"))) {
+        $('#nameError').html('Fundacja o tej nazwie istnieje').css('color', 'red');
+      } else
+        $('#nameError').html('Fundacja o tej nazwie nie istnieje w bazie, mozna dodac').css('color', 'green');
+    })
+
+    function checkIfInstitutionExist() {
+      var fundationName = document.getElementById("fundationName").value;
+      var inputElements = document.getElementsByClassName('allInst');
+
+
+      for(var i=0; inputElements[i]; ++i){
+        if(inputElements[i].value == fundationName){
+          alert("Taka nazwa fundacji już istnieje w bazie danych")
+          returnToPreviousPage();
+          return false;
+        }
+      }
+    }
+
+    function returnToPreviousPage() {
+      window.history.forward(-1)
+    }
+  </script>
+  </body>
+</html>

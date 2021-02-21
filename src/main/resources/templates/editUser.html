@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <header>
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+        <span sec:authorize="hasRole('ROLE_ADMIN')">
+        <br/><br/><br/><br/>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <span th:include="fragments/adminNavigation :: adminNavigation"></span>
+        </span>
+      </nav>
+    </header>
+
+    <section class="login-page">
+      <h2>Edytuj użytkownika</h2>
+      <form th:object="${user}" method="post" th:action="@{/admin/editUser}">
+        <div class="form-group">
+          <label>Imię</label><br/>
+          <input type="text" th:field="*{username}" placeholder="Imię" id="username"/>
+          <span id="nameError"></span>
+        </div>
+        <div class="form-group">
+          <label>Nazwisko</label><br/>
+          <input type="text" th:field="*{lastName}" placeholder="Nazwisko" />
+        </div>
+        <div class="form-group">
+          <input type="password" th:field="*{password}" placeholder="Hasło" />
+          <span id='messagePassEmpty'></span>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password2" id="password2" placeholder="Powtórz hasło" />
+          <span id='message'></span>
+        </div>
+        <div class="form-group">
+          <label>E-Mail</label><br/>
+          <input type="email" th:field="*{email}" placeholder="E-mail"/>
+          <input type="hidden" th:field="*{id}"/>
+          <input type="hidden" th:field="*{created}"/>
+          <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+          <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="select-css" th:field="*{active}">
+            <option th:value="true">Aktywny</option>
+            <option th:value="false">Dezaktywowany</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Uprawnienia</label>
+        <select class="select-css" th:field="*{usersRoles}">
+          <option th:each="i : ${usersRoles}" th:value="${i.id}" th:text="${#strings.substring(i.role,5)}">
+        </select>
+        </div>
+        <div style="min-width: 31%;" class="form-group form-group--buttons">
+          <button style="min-width: 31%;" type="submit" onclick="return checkPasswordAndName()"  class="btn">Edytuj Użytkownika</button>
+        </div>
+
+      </form>
+
+    </section>
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+    </footer>
+    <script type="text/javascript">
+      $('#username').on('keyup', function() {
+        if($('#username').val().includes('admin')) {
+          $('#adminError').html('Konto ze słowem admin jest zarezerwowane').css('color', 'red');
+        }
+        if ($('#username').val() == '') {
+          $('#adminError').html('Pole imię nie może być puste').css('color', 'red');
+        }
+        else if(!$('#username').val().includes('admin') && !$('#username').val() == '')
+          $('#adminError').html('Imie dozwolone').css('color', 'green');
+      })
+
+      $('#lastname').on('keyup', function() {
+        if ($('#lastname').val() == '') {
+          $('#lastnameError').html('Pole Nazwisko nie może być puste').css('color', 'red');
+        }
+        else
+          $('#lastnameError').html('').css('color', 'green');
+      })
+
+      $('#email').on('keyup', function() {
+        if ($('#email').val() == '') {
+          $('#emailError').html('Pole Email nie może być puste').css('color', 'red');
+        }
+        else if (!$('#email').val().match(/([@])/)){
+          $('#emailError').html('To nie jest adres mailowy').css('color', 'red');
+        }
+        else
+          $('#emailError').html('').css('color', 'green');
+      })
+
+
+      $('#password, #password2').on('keyup', function () {
+        if($('#password').val() =='')
+        {
+          $('#message').html('Hasło powinno zawierac minimum 8 znaków oraz składać się z przynajmniej jednej litery, cyfry oraz znaku specjalnego').css('color', 'red')
+        }
+        else if ($('#password').val() != $('#password2').val()) {
+          $('#message').html('Jest różnica względem pierwszego hasła, popraw').css('color', 'red')
+        }
+        else if($('#password').val().length<8) {
+          $('#message').html('Hasło jest za krótkie').css('color', 'red');
+        }
+        else if (!$('#password').val().match(/([a-z])/) || !$('#password').val().match(/([0-9])/) ){
+          $('#message').html('Hasło nie posiada liter i liczb').css('color', 'red');
+        }
+        else if (!$('#password').val().match(/([A-Z])/)){
+          $('#message').html('Hasło nie posiada wielkiej litery').css('color', 'red');
+        }
+        else if (!$('#password').val().match(/([!,%,&,@,#,$,^,*,?,_,~])/)){
+          $('#message').html('Hasło nie zawiera znaku specjalnego').css('color', 'red');
+        }
+        else {
+          $('#message').html('Jest ok').css('color', 'green');
+        }
+      });
+
+
+      function checkPasswordAndName() {
+        var pass1 = document.getElementById("password").value;
+        var pass2 = document.getElementById("password2").value;
+        var username = document.getElementById("username").value;
+        var lastname = document.getElementById("lastname").value;
+        var email = document.getElementById("email").value;
+
+        if(pass1 != pass2 )
+        {
+          alert("Hasła różnią się od siebie")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(pass1.length<8)
+        {
+          alert("Ilość znaków w haśle jest mniejsza niż wymagane 8")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(!pass1.match(/([a-z])/) || !pass1.match(/([0-9])/))
+        {
+          alert("Hasło nie posiada liter i liczb")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(!pass1.match(/([A-Z])/))
+        {
+          alert("Hasło nie posiada wielkiej litery")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(!pass1.match(/([!,%,&,@,#,$,^,*,?,_,~])/))
+        {
+          alert("Hasło nie zawiera znaku specjalnego")
+          returnToPreviousPage();
+          return false;
+        }
+        if(username.includes('admin')){
+          alert("Konto ze słowem admin jest zarezerwowane")
+          returnToPreviousPage();
+          return false;
+        }
+        else if(username == ""){
+          alert("Pole Imię nie może być puste")
+          returnToPreviousPage();
+          return false;
+        }
+        if(lastname ==""){
+          alert("Pole Nazwisko nie może być puste")
+          returnToPreviousPage();
+          return false;
+        }
+        if(email ==""){
+          alert("Pole Email nie może być puste")
+          returnToPreviousPage();
+          return false;
+        }
+      }
+
+      function returnToPreviousPage() {
+        window.history.forward(-1)
+      }
+    </script>
+  </body>
+</html>

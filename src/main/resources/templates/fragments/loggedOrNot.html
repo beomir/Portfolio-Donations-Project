@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="loggedOrNot">
+    <ul th:if="${#request.remoteUser} == null" class="nav--actions">
+        <li><a th:href="@{''(lang=ru)}"><img th:src="@{/images/russian.png}"/></a></li>
+        <li><a th:href="@{''(lang=pl)}"><img th:src="@{/images/polish.png}"/></a></li>
+        <li><a th:href="@{''(lang=en)}"><img th:src="@{/images/english.png}"/></a></li>
+        <li><a th:text="#{app.notlogged.a1}"  th:href="@{/login}" class="btn btn--small btn--without-border">Zaloguj</a></li>
+        <li><a th:text="#{app.notlogged.a2}" th:href="@{/register}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+    </ul>
+    <ul th:if="${#request.remoteUser} != null" class="nav--actions">
+        <li><a th:href="@{''(lang=ru)}"><img th:src="@{/images/russian.png}"/></a></li>
+        <li><a th:href="@{''(lang=pl)}"><img th:src="@{/images/polish.png}"/></a></li>
+        <li><a th:href="@{''(lang=en)}"><img th:src="@{/images/english.png}"/></a></li>
+        <li class="logged-user">
+            <div th:text="#{app.welcome} + ' ' +${username}"></div>
+            <ul class="dropdown">
+                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:text="#{app.logged.a3}" th:href="@{/admin}">Panel admina</a></li>
+                <li><a th:text="#{app.logged.a4}" th:href="@{/myProfile/{token}(token=${token})}">Zarzadzaj kontem</a></li>
+                <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:text="#{app.logged.a5}" th:href="@{/logged/donationList}">Moje zbiórki</a></li>
+                <li><a th:text="#{app.logged.a6}" th:href="@{/logout}">Wyloguj</a></li>
+            </ul>
+        </li>
+    </ul>
+    <span id="loggedEmail" th:text="${#request.remoteUser}" style="visibility: hidden"></span>
+</div>
+</body>
+</html>

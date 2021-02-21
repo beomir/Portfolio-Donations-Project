@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<span th:fragment="userNotExists">
+    <span>Podanego maila nie ma w bazie danych</span><br/><br/>
+     <span style="font-weight: bold"><a class="hovery" style="cursor: pointer" th:href="@{/resetPassword}">Wróć do poprzedniej strony</a></span>
+</span>
+</body>
+</html>

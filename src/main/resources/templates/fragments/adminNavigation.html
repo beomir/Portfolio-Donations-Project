@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="adminNavigation">
+    <ul>
+    <li sec:authorize="hasRole('ROLE_ADMIN')">
+        <ul class="nav--actions">
+            <li  class="logged-user">
+                <div th:text="#{app.admin.d1}">Użytkownicy</div>
+                <ul class="dropdown">
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/admin/usersList}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d1a2}" th:href="@{/admin/formUser}">Stwórz Użytkownika</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li sec:authorize="hasRole('ROLE_ADMIN')">
+        <ul class="nav--actions">
+            <li  class="logged-user">
+                <div th:text="#{app.admin.d2}">Dotacje</div>
+                <ul class="dropdown">
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/admin/donationListAll}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d2a2}" th:href="@{/admin/donationsCreation}">Dodaj Dotacje</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li sec:authorize="hasRole('ROLE_ADMIN')">
+        <ul class="nav--actions">
+            <li  class="logged-user">
+                <div th:text="#{app.category.d1}">Kategorie</div>
+                <ul class="dropdown">
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/admin/categoryList}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d3a2}" th:href="@{/admin/formCategory}">Dodaj Kategorie</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li sec:authorize="hasRole('ROLE_ADMIN')">
+        <ul class="nav--actions">
+            <li  class="logged-user">
+                <div th:text="#{app.admin.d4}">Fundacje</div>
+                <ul class="dropdown">
+                    <li><a th:text="#{app.admin.d1a1}" th:href="@{/institution}">Wyświetl liste</a></li>
+                    <li><a th:text="#{app.admin.d4a2}" th:href="@{/admin/formInstitution}">Dodaj fundacje</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    </ul>
+</div>
+</body>
+</html>

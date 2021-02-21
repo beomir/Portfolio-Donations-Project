@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="header">
+    <ul>
+        <li><a style="white-space: pre-wrap" th:text="#{app.header.a1}" th:href="@{/logged/form}" class="btn btn--without-border active">Start</a></li>
+        <li th:if="${#httpServletRequest.requestURI != '/index'}"><a style="white-space: pre-wrap" th:text="#{app.header.a2}" th:href="@{/index#whatsGoingOn}" class="btn btn--without-border" >O co chodzi?</a></li>
+        <li th:if="${#httpServletRequest.requestURI == '/index'}"><a style="white-space: pre-wrap" th:text="#{app.header.a2}" href="#" class="btn btn--without-border" id="link0">O co chodzi?</a></li>
+        <li><a th:if="${#httpServletRequest.requestURI != '/index'}" style="white-space: pre-wrap" th:text="#{app.header.a3}" th:href="@{/index#aboutUs}" class="btn btn--without-border">O nas</a></li>
+        <li><a th:if="${#httpServletRequest.requestURI == '/index'}" style="white-space: pre-wrap" th:text="#{app.header.a3}" href="#" id="link1" class="btn btn--without-border">O nas</a></li>
+        <li><a style="white-space: pre-wrap" th:text="#{app.header.a4}" th:href="@{/institution}" class="btn btn--without-border">Fundacje i organizacje</a></li>
+        <li><a style="white-space: pre-wrap" th:text="#{app.header.a5}" th:href="@{/contact}" class="btn btn--without-border">Kontakt</a></li>
+    </ul>
+</div>
+</body>
+</html>
+
+

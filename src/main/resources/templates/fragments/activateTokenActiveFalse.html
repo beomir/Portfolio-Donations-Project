@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<span th:fragment="activateTokenActiveFalse">
+    <span style="font-size: 16px;">Token do resetowania hasła wygasł. W celu ponownego zresetowania hasła kliknij:
+
+        <span style="font-weight: bold"><a class="hovery" style="cursor: pointer" th:href="@{/resetPassword}">Tutaj</a></span>
+    </span>
+</span>
+</body>
+</html>

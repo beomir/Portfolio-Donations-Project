@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" th:src= "@{/js/jquery.scrollTo.min.js}"></script>
+  </head>
+  <body>
+    <header class="header--form-page">
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+        <span sec:authorize="hasRole('ROLE_ADMIN')">
+        <br/><br/><br/><br/>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <span th:include="fragments/adminNavigation :: adminNavigation"></span>
+        </span>
+      </nav>
+
+      <div class="slogan container container--90">
+        <div class="slogan--item">
+          <h1>
+            Oddaj rzeczy, których już nie chcesz<br />
+            <span class="uppercase">potrzebującym</span>
+          </h1>
+
+          <div class="slogan--steps">
+            <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
+            <ul class="slogan--steps-boxes">
+              <li>
+                <div><em>1</em><span><a id="firstStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Wybierz rzeczy</a></span></div>
+              </li>
+              <li>
+                <div><em>2</em><span><a id="secondStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Spakuj je w worki</a></span></div>
+              </li>
+              <li>
+                <div><em>3</em><span><a id="thirdStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Wybierz fundację</a></span></div>
+              </li>
+              <li>
+                <div><em>4</em><span><a id="fourthStep" href="#chosenThings" style="text-decoration: none;font-size: 18px;text-align: center">Zamów kuriera</a></span></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="form--steps">
+      <div class="form--steps-instructions">
+        <div class="form--steps-container">
+          <h3>Ważne!</h3>
+          <p data-step="1" class="active">
+            Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+            wiedzieć komu najlepiej je przekazać.
+          </p>
+          <p data-step="2">
+            Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+            wiedzieć komu najlepiej je przekazać.
+          </p>
+          <p data-step="3">
+           Wybierz jedną, do
+            której trafi Twoja przesyłka.
+          </p>
+          <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
+        </div>
+      </div>
+
+      <div class="form--steps-container" id="chosenThings">
+        <div class="form--steps-counter">Krok <span>1</span>/4</div>
+        <form  th:action="@{/logged/form}" method="post">
+          <!-- STEP 1: class .active is switching steps -->
+          <div data-step="1" class="active">
+            <h3>Zaznacz co chcesz oddać:</h3>
+
+            <div th:each="category: ${categories}" class="form-group form-group--checkbox">
+              <label>
+                <input class="categoryCheckbox" type="checkbox" name="categories" th:value="${category.id}"/>
+                <span class="checkbox"></span>
+                <span th:text="${category.name}" class="description"></span>
+              </label>
+            </div>
+
+            <div class="form-group form-group--buttons">
+              <button type="button" class="btn next-step" onclick="return categoriesCheck()">Dalej</button>
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div data-step="2" id="packBag">
+            <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+
+            <div class="form-group form-group--inline">
+              <label>
+                Liczba 60l worków:
+                <input type="number" th:field="*{donation.quantity}" step="1" min="1" id="quantity"/>
+              </label>
+            </div>
+
+            <div class="form-group form-group--buttons">
+              <button type="button" class="btn prev-step">Wstecz</button>
+              <button type="button" class="btn next-step" onclick="return bagsQty()">Dalej</button>
+            </div>
+          </div>
+
+
+
+          <!-- STEP 3 -->
+          <div data-step="3" id="choseInstitution">
+            <h3>Wybierz organizacje, której chcesz pomóc:</h3>
+
+            <div  th:each="i : ${institutions}" class="form-group form-group--checkbox">
+              <label>
+                <input class="checkboxRadio" type="radio" name="institution" th:field="*{donation.institution.id}" th:value="${i.id}" />
+                <span  class="checkbox radio"></span>
+                <span  class="description">
+                  <div th:value="${i.id}" th:text="${i.name}" class="title" ></div>
+                  <div th:text="${i.description}" class="subtitle"></div>
+               <br/> </span>
+                </label>
+            </div>
+
+            <div class="form-group form-group--buttons">
+              <button type="button" class="btn prev-step">Wstecz</button>
+              <button type="button" class="btn next-step">Dalej</button>
+            </div>
+          </div>
+
+          <!-- STEP 5 -->
+          <div data-step="4" id="orderTheCourier">
+            <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
+
+            <div class="form-section form-section--columns">
+              <div class="form-section--column">
+                <h4>Adres odbioru</h4>
+                <div class="form-group form-group--inline">
+                  <label> Ulica <input type="text" th:field="*{donation.street}" id="street"/> </label>
+                  <input type="hidden" th:value="${userId}" id="users" name="users"/>
+                  <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+                  <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+                  <input type="hidden" th:value="true" id="active" name="active"/>
+                  <input type="hidden" th:value="${localDateTime}" id="created" name="created"/>
+                  <input type="hidden" th:value="false" id="expired" name="expired"/>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label> Miasto <input type="text" th:field="*{donation.city}" id="city"/> </label>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label> Kod pocztowy <input type="text" th:field="*{donation.zipCode}" id="zipCode"/>
+                  </label>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label>Numer telefonu <input type="tel" th:field="*{donation.phone}" id="phone"/>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-section--column">
+                <h4>Termin odbioru</h4>
+                <div class="form-group form-group--inline">
+                  <label> Data <input type="date" th:field="*{donation.pickUpDate}" id="date" min="1899-01-01"/> </label>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label> Godzina <input type="time" th:field="*{donation.pickUpTime}" id="time" min="00:00:00"/> </label>
+                </div>
+
+                <div class="form-group form-group--inline">
+                  <label>
+                    Uwagi dla kuriera
+                    <textarea name="more_info" rows="5" th:field="*{donation.pickUpComment}" id="comment"></textarea>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-group--buttons">
+              <button type="button" class="btn prev-step">Wstecz</button>
+              <button id="addB" type="button" class="btn next-step" onclick="addressAndReceiptDate()">Dalej</button>
+            </div>
+          </div>
+
+          <!-- STEP 6 -->
+          <div data-step="5">
+            <h3>Podsumowanie Twojej darowizny</h3>
+
+            <div class="summary">
+              <div class="form-section">
+                <h4>Oddajesz:</h4>
+                <ul>
+                  <li>
+                    <span class="icon icon-bag"></span>
+                    <span class="summary--text" id="bags-qty"></span>
+                    <span style="margin-left: 0.25em;display:inline-block;"> worki z</span>
+                    <span class="summary--text" id="categories-event" style="margin-left: 0.25em;display:inline-block;"> </span>
+                    <span style="margin-left: 0.25em;display:inline-block;">  dla dzieci </span>
+
+                  </li>
+
+                  <li>
+                    <span class="icon icon-hand"></span>
+                    <span>Dla fundacji: </span>
+                    <span style="margin-left: 0.25em;display:inline-block;" class="summary--text" id="institution-event"></span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="form-section form-section--columns">
+                <div class="form-section--column">
+                  <h4 >Adres odbioru:</h4>
+                  <ul>
+                    <li id="street-event"></li>
+                    <li id="city-event"></li>
+                    <li id="zipCode-event"></li>
+                    <li id="phone-event"></li>
+                  </ul>
+                </div>
+
+                <div class="form-section--column">
+                  <h4 >Termin odbioru:</h4>
+                  <ul>
+                    <li id="date-event"></li>
+                    <li id="time-event"></li>
+                    <li id="comment-event"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group form-group--buttons">
+              <button id="ret" type="button" class="btn prev-step">Wstecz</button>
+              <button type="submit" class="btn" onclick="return checkData()">Potwierdzam</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+    </footer>
+  <script>
+    var today = new Date();
+    var dd = today.getDate()+1;
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+    if(dd<10){
+      dd='0'+dd
+    }
+    if(mm<10){
+      mm='0'+mm
+    }
+    today = yyyy+'-'+mm+'-'+dd;
+    document.getElementById("date").setAttribute("min", today);
+
+
+
+    function categoriesCheck() {
+      var inputElements = document.querySelectorAll('input[name="categories"]:checked ~ span.description');
+      checkedValue = null;
+      for (var i = 0; inputElements[i]; ++i) {
+        if (inputElements[i].checked) {
+          checkedValue += inputElements[i];
+        }
+      }
+      console.log(checkedValue)
+      if(checkedValue.value == null){
+        alert("Nie została wybrana wartość dla pól Kategoria")
+      }
+    }
+
+    function bagsQty() {
+      var bagsQuantity = document.getElementById("quantity");
+      if (bagsQuantity.value < 1)
+      {
+        alert("Ilość worków nie może być mniejsza niz 1")
+      }
+
+    }
+
+    function addressAndReceiptDate() {
+      const street = document.getElementById("street").value;
+      const city = document.getElementById("city").value;
+      const zipCode = document.getElementById("zipCode").value;
+      const phone = document.getElementById("phone").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+
+
+      if (street == "" || city == "" || zipCode == "" || phone== "" || date == "" || time == ""){
+        alert("Wypełnij dane kontaktowe - tylko pole Komentarz może być puste")
+      }
+    }
+
+    function checkData() {
+      if(document.querySelector('input[class="checkboxRadio"]:checked ~ span.description div.title') == null){
+        alert("Nie została wybrana żadna fundacja")
+      }
+      const institution = document.querySelector('input[class="checkboxRadio"]:checked ~ span.description div.title');
+      var inputElements = document.querySelectorAll('input[name="categories"]:checked ~ span.description');
+      const street = document.getElementById("street").value;
+      const city = document.getElementById("city").value;
+      const zipCode = document.getElementById("zipCode").value;
+      const phone = document.getElementById("phone").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const bagsQuantity = document.getElementById("quantity");
+
+      var checkedValue = "";
+      var categories;
+      for(var i=0; inputElements[i]; ++i){
+        if(inputElements[i].innerHTML){
+          categories = inputElements[i].innerHTML;
+          checkedValue +=  categories + ", " ;
+        }
+      }
+
+
+
+      if(checkedValue=="" || institution=="" || street== ""||  city=="" || zipCode=="" || phone=="" || date=="" || time=="")
+      {
+        alert("Wypełnij zostawione puste pola z formularza - tylko pole Komentarz może być puste");
+        returnToPreviousPage();
+        return false;
+      }
+      if (bagsQuantity.value < 1)
+      {
+        alert("Ilość worków nie może być mniejsza niż 1");
+        returnToPreviousPage();
+        return false;
+      }
+      if (date<today){
+        alert("Najwcześniejsza data odbioru może być ustawiona na jutro");
+        returnToPreviousPage();
+        return false;
+      }
+      function returnToPreviousPage() {
+        window.history.forward(-1);
+      }
+    }
+
+  </script>
+  </body>
+</html>

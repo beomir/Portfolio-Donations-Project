@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src ="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link th:href="@{/css/style.css}" rel='stylesheet' type='text/css' />
+
+  </head>
+  <body>
+    <header>
+      <nav class="container container--70">
+        <span th:include="fragments/loggedOrNot :: loggedOrNot"></span>
+
+        <span th:include="fragments/header :: header"></span>
+        <span sec:authorize="hasRole('ROLE_ADMIN')">
+        <br/><br/><br/><br/>
+        <div th:text="#{app.logged.a3}" style="font-weight: bold;font-size: 20px">Panel Admina</div>
+        <span th:include="fragments/adminNavigation :: adminNavigation"></span>
+        </span>
+      </nav>
+    </header>
+
+    <section class="login-page">
+      <h2 th:text="'Hej '+ ${username} + ' ,poniżej znajdziesz szczegóły dotyczące zbiórki numer: ' + ${donations.id}"> </h2>
+    </section>
+    <form style="text-align: center" th:object="${donations}" method="post" th:action="@{/logged/myFundraising}">
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Ilość</label><br/>
+        <input type="number" th:field="*{quantity}"  />
+      </div>
+      <div style="text-align: center" class="form-group">
+        <label style="color: black;font-weight: bold">Fundacja</label><br/>
+        <select style="text-align: center;margin-left: auto;margin-right: auto;" class="select-css" th:field="*{institution}">
+          <option th:each="i : ${institutions}" th:value="${i.id}" th:text="${i.name}">
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Utworzona</label><br/>
+        <span th:text="*{#strings.replace(#strings.substring(created,0,19),'T',' ')}"></span>
+        <input type="hidden" th:field="*{created}"/>
+        <input type="hidden" th:value="1" id="usersRoles" name="usersRoles"/>
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Ostatnia aktualizacja</label><br/>
+        <span th:text="*{#strings.replace(#strings.substring(last_update,0,19),'T',' ')}"></span>
+        <input type="hidden" th:value="${localDateTime}" id="last_update" name="last_update"/>
+      </div>
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Przez kogo</label><br/>
+        <span th:text="*{changeBy}"></span>
+        <input type="hidden" th:value="${#request.remoteUser}" id="changeBy" name="changeBy"/>
+      </div>
+
+      <div style="text-align: center" class="form-group">
+        <label style="color: black;font-weight: bold">Odebrana?</label><br/>
+        <select style="text-align: center;margin-left: auto;margin-right: auto" class="select-css" th:field="*{active}">
+          <option th:value="true">Nie</option>
+          <option th:value="false">Tak</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Miasto</label><br/>
+        <input type="text" th:field="*{city}"  />
+      </div>
+
+<div style="text-align: center" class="form-group">
+      <label style="color: black;font-weight: bold">Kategorie</label><br/>
+      <label>Wybrane:</label>
+      <div th:each="i : *{categories}"  th:text="${i.name}"></div><br/>
+      <div style="font-size: 16px;font-weight: bold;">Zmień:</div>
+      <div style="text-align: center" th:each="category: ${categories}" class="form-group">
+        <label>
+          <input class="categoryCheckbox" type="checkbox" name="categories" th:value="${category.id}"/>
+          <span class="checkbox"></span>
+          <span th:text="${category.name}" class="description"></span>
+        </label>
+      </div>
+</div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Ulica</label><br/>
+        <input type="text" th:field="*{street}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Kod pocztowy</label><br/>
+        <input type="text" th:field="*{zipCode}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Numer Telefonu</label><br/>
+        <input type="text" th:field="*{phone}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Godzina odbioru</label><br/>
+        <input type="time" th:field="*{pickUpTime}"  />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Data odbioru</label><br/>
+        <input type="date" th:field="*{pickUpDate}"  id="date" min="1899-01-01" />
+      </div>
+
+      <div class="form-group">
+        <label style="color: black;font-weight: bold">Komentarz Odbioru</label><br/>
+        <input type="text" th:field="*{pickUpComment}"  />
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{users}"/>
+        <input type="hidden" th:field="*{expired}"/>
+      </div>
+
+
+
+      <div style="margin-left: auto;margin-right: auto" class="form-group form-group--buttons">
+        <button style="margin-left: auto;margin-right: auto;min-width: 23%;" type="submit" onclick="return checkbox()" class="btn">Zmień szczegóły zbiórki</button>
+      </div>
+    </form>
+
+    <footer>
+      <span th:include="fragments/footer :: footer"></span>
+      </footer>
+    <script type="text/javascript">
+        var today = new Date();
+        var dd = today.getDate()+1;
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("date").setAttribute("min", today);
+
+    function checkbox() {
+      var inputElements = document.getElementsByClassName('categoryCheckbox');
+      checkedValue = null;
+      for (var i = 0; inputElements[i]; ++i) {
+        if (inputElements[i].checked) {
+          checkedValue += inputElements[i];
+        }
+      }
+      if(checkedValue == null){
+        alert("Nie została wybrana wartość dla pól Kategoria")
+        returnToPreviousPage();
+        return false;
+      }
+      function returnToPreviousPage() {
+        window.history.forward(-1);
+      }
+    }
+
+
+  </script>
+  </body>
+</html>
